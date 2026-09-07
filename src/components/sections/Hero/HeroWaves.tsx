@@ -9,6 +9,11 @@ import styles from './Hero.module.css';
  *
  * Raymarch-ul este scump, asa ca pe ecrane mici ramanem pe treapta de
  * calitate joasa; pe desktop urcam la `medium`. Efectul este pur decorativ.
+ *
+ * Despre culori: in shader `alpha` este chiar factorul de ceata, deci acolo
+ * unde s-ar vedea `horizonColor` transparenta e deja aproape totala.
+ * Ce se vede efectiv este amestecul dintre `waveColor` si `crestColor` —
+ * amandoua trebuie sa aiba ton, altfel efectul dispare pe fundal deschis.
  */
 export function HeroWaves() {
   const isDesktop = useMediaQuery('(min-width: 64rem)');
@@ -16,11 +21,11 @@ export function HeroWaves() {
   return (
     <div className={styles.waves} aria-hidden="true">
       <GradientWaves
-        horizonColor="#d7e2d3"
-        waveColor="#6b8a69"
-        crestColor="#ffffff"
+        horizonColor="#e7eee5"
+        waveColor="#6b7f6e"
+        crestColor="#c8d4c6"
         speed={0.25}
-        amplitude={1.6}
+        amplitude={2}
         waveScale={0.6}
         waveRatio={0.9}
         swell={35}
@@ -28,10 +33,10 @@ export function HeroWaves() {
         tilt={1.11}
         zoom={0.95}
         height={5.5}
-        fogDepth={26}
+        fogDepth={38}
         detail={isDesktop ? 'medium' : 'low'}
         brightness={1}
-        opacity={0.9}
+        opacity={1}
         mouseInteraction={isDesktop}
         parallaxStrength={0.35}
         grain
