@@ -3,7 +3,7 @@ import styles from './SvgDefs.module.css';
 /**
  * Definitii SVG globale, randate o singura data in layout.
  *
- * `#btn-goo` intareste canalul alfa (alfa x 22 - 10), astfel incat
+ * `#btn-goo` intareste canalul alfa (alfa x 16 - 7), astfel incat
  * formele neclarizate sa capete margini dure si sa se lipeasca intre ele
  * — efectul metaball al butonului primary.
  */
@@ -17,7 +17,7 @@ export function SvgDefs() {
             values="1 0 0 0 0
                     0 1 0 0 0
                     0 0 1 0 0
-                    0 0 0 22 -10"
+                    0 0 0 16 -7"
           />
         </filter>
       </defs>

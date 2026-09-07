@@ -66,7 +66,12 @@ Fiecare componentă stă în folderul ei, cu `Component.tsx`, `Component.module.
 
 Varianta `primary` are o suprafață animată de tip *metaball*: opt forme neclarizate
 orbitează, iar filtrul SVG `#btn-goo` întărește canalul alfa, ceea ce le lipește
-în siluete cu margine dură. Peste tot se aplică un `hue-rotate` lent.
+într-o siluetă organică. Peste tot se aplică un `hue-rotate` lent.
+
+Formele au **o singură culoare plină**, nu gradient propriu — altfel s-ar vedea
+cusături acolo unde se suprapun. Gradientul chihlimbar → portocaliu se aplică
+o singură dată, ca strat peste toată suprafața (`.plasma::after`), exact ca în
+originalul unde masca acoperea un singur strat colorat.
 
 - Markup-ul suprafeței: `src/components/ui/Button/Plasma.tsx` (pur decorativ, `aria-hidden`)
 - Stilurile: blocul „VARIANTA PRIMARY" din `Button.module.css`

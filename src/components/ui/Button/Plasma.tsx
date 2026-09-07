@@ -1,7 +1,7 @@
 import styles from './Button.module.css';
 
-/** Numarul de blob-uri care orbiteaza peste corpul continuu. */
-const BLOB_COUNT = 7;
+/** Numarul de forme care orbiteaza si se lipesc intre ele. */
+const BLOB_COUNT = 8;
 
 /**
  * Suprafata animata a butonului primary.
@@ -13,7 +13,6 @@ export function Plasma() {
     <span aria-hidden="true" className={styles.plasma}>
       <span className={styles.goo}>
         <span className={styles.gooBlur}>
-          <span className={styles.blobBase} />
           {Array.from({ length: BLOB_COUNT }, (_, index) => (
             <span key={index} className={styles.blob} />
           ))}
