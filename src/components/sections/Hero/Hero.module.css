@@ -1,8 +1,27 @@
 .hero {
+  position: relative;
+  overflow: hidden;
   padding-block: var(--section-y) var(--section-y-lg);
 }
 
+/* Fundalul de valuri. Se estompeaza sus (sub header) si jos
+   (spre sectiunea urmatoare), ca sa nu apara o taietura dreapta. */
+.waves {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #000 14%,
+    #000 82%,
+    transparent 100%
+  );
+}
+
 .grid {
+  position: relative;
+  z-index: 1;
   display: grid;
   gap: var(--space-12);
   align-items: center;

@@ -1,30 +1,31 @@
-.list {
-  display: flex;
-  flex-direction: column;
-  margin-top: var(--space-10);
-  max-width: var(--measure-wide);
+.grid {
+  display: grid;
+  gap: var(--space-4);
+  margin-top: var(--space-12);
 }
 
 .item {
-  position: relative;
-  padding-block: var(--space-5);
-  padding-left: var(--space-8);
-  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  padding: var(--space-8);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface);
+}
+
+.icon {
+  flex: none;
+  width: 1.75rem;
+  height: 1.75rem;
+  color: var(--color-accent);
+  stroke-width: 1.25;
+}
+
+.text {
   font-size: var(--text-md);
   line-height: var(--leading-relaxed);
   color: var(--color-ink-muted);
-}
-
-.item:first-child {
-  border-top: 1px solid var(--color-border);
-}
-
-/* Elipsa decorativă „...” din vocea textului */
-.item::before {
-  content: '…';
-  position: absolute;
-  left: 0;
-  color: var(--color-ink-soft);
 }
 
 .statement {
@@ -39,8 +40,25 @@
   max-width: 24ch;
 }
 
-@media (min-width: 48rem) {
+@media (min-width: 40rem) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-5);
+  }
+
   .item {
-    padding-left: var(--space-10);
+    padding: var(--space-10);
+  }
+}
+
+/* 3 coloane x 2 randuri */
+@media (min-width: 64rem) {
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-6);
+  }
+
+  .item {
+    padding: var(--space-12) var(--space-10);
   }
 }

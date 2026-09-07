@@ -23,6 +23,8 @@ npm run typecheck  # TypeScript, fără emit
 | Reset global | `src/styles/reset.css` |
 | Clase utilitare globale (`u-*`) | `src/styles/utilities.css` |
 | Ordinea secțiunilor | `src/app/page.tsx` |
+| Valurile din hero (culori, viteză) | `src/components/sections/Hero/HeroWaves.tsx` |
+| Pictogramele din secțiunea 02 | `icon` în `reasons.items` + harta din `Reasons.tsx` |
 | Meniu și CTA din header | `nav` în `src/content/site.ts` |
 
 **Tot conținutul editorial stă în `src/content/site.ts`.** Componentele nu conțin text scris de mână.
@@ -84,6 +86,19 @@ originalul unde masca acoperea un singur strat colorat.
 
 Textul este maro-închis (`--plasma-ink`), nu alb: pe chihlimbar, albul ar coborî
 sub pragul de contrast WCAG AA.
+
+## Fundalul de valuri din hero
+
+`GradientWaves` (reactbits.dev) — câmp de valuri raymarchat în WebGL, portat la
+TypeScript și la CSS Modules. Logica shaderului este neschimbată față de sursă.
+
+- Componenta: `src/components/ui/GradientWaves`
+- Configurarea pentru hero: `src/components/sections/Hero/HeroWaves.tsx`
+- Bucla de randare se oprește singură când efectul iese din ecran, când tabul e
+  ascuns sau când sistemul cere mișcare redusă.
+- Pe ecrane sub 64rem se folosește treapta de calitate `low` și se dezactivează
+  parallax-ul, pentru că raymarch-ul este scump pe telefon.
+- Dependință: `ogl`.
 
 ## Styleguide
 

@@ -62,14 +62,23 @@ export const hero = {
 /* ------------------------------------------------------------------ 02 */
 export const reasons = {
   title: 'Poate ai ajuns aici pentru că...',
+  /* `icon` este un nume din setul Lucide; corespondența nume -> componentă
+     se face în `Reasons.tsx`. Ca să schimbi pictograma, schimbă numele aici
+     și adaugă-l în harta din componentă. */
   items: [
-    'te simți obosit chiar și atunci când ai dormit.',
-    'îți este greu să oprești gândurile.',
-    'spui „sunt bine” mai des decât simți că e adevărat.',
-    'ai trecut printr-o schimbare și încă nu știi cum să te așezi în ea.',
-    'în relațiile tale repeți lucruri pe care ți-ai promis că nu le vei mai repeta.',
-    'sau pur și simplu simți că ai nevoie să vorbești cu cineva.',
-  ],
+    { icon: 'batteryLow', text: 'te simți obosit chiar și atunci când ai dormit.' },
+    { icon: 'brain', text: 'îți este greu să oprești gândurile.' },
+    { icon: 'speech', text: 'spui „sunt bine” mai des decât simți că e adevărat.' },
+    {
+      icon: 'compass',
+      text: 'ai trecut printr-o schimbare și încă nu știi cum să te așezi în ea.',
+    },
+    {
+      icon: 'repeat',
+      text: 'în relațiile tale repeți lucruri pe care ți-ai promis că nu le vei mai repeta.',
+    },
+    { icon: 'messages', text: 'sau pur și simplu simți că ai nevoie să vorbești cu cineva.' },
+  ] as const,
   statement: 'Nu trebuie să existe un motiv suficient de mare pentru a cere ajutor.',
 };
 

@@ -9,6 +9,8 @@ export { Collapse } from './Collapse';
 export { Container } from './Container';
 export type { ContainerSize } from './Container';
 export { Eyebrow } from './Eyebrow';
+export { GradientWaves } from './GradientWaves';
+export type { GradientWavesProps, GradientWavesDetail } from './GradientWaves';
 export { Heading } from './Heading';
 export type { HeadingLevel, HeadingSize } from './Heading';
 export { MediaPlaceholder } from './MediaPlaceholder';

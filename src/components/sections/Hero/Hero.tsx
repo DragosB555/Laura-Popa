@@ -1,11 +1,14 @@
 import { Button, Container, MediaPlaceholder, Reveal } from '@/components/ui';
 import { anchors, hero } from '@/content/site';
+import { HeroWaves } from './HeroWaves';
 import styles from './Hero.module.css';
 
 /** 01 — HERO */
 export function Hero() {
   return (
     <section id={anchors.hero} className={styles.hero}>
+      <HeroWaves />
+
       <Container size="xl">
         <div className={styles.grid}>
           <Reveal className={styles.content}>
