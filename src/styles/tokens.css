@@ -30,6 +30,16 @@
 
   --color-focus: #6b7f6e;
 
+  /* Buton primary — efect „lava" (metaball).
+     Paleta chihlimbar/portocaliu, independenta de restul site-ului. */
+  --plasma-1: #ffbf48;
+  --plasma-2: #be4a1d;
+  --plasma-3: #ffbf4780;
+  --plasma-4: #bf4a1d80;
+  --plasma-5: #ffbf4740;
+  --plasma-ink: #2a1206;
+  --plasma-speed: 2s;
+
   /* ---------------------------------------------------------------------
      2. TIPOGRAFIE
      --------------------------------------------------------------------- */

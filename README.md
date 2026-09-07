@@ -19,6 +19,7 @@ npm run typecheck  # TypeScript, fără emit
 | --- | --- |
 | Texte, nume, preț, contact, întrebări | `src/content/site.ts` |
 | Culori, tipografie, spațiere, raze, umbre | `src/styles/tokens.css` |
+| Culorile și viteza butonului primary | `--plasma-*` în `src/styles/tokens.css` |
 | Reset global | `src/styles/reset.css` |
 | Clase utilitare globale (`u-*`) | `src/styles/utilities.css` |
 | Ordinea secțiunilor | `src/app/page.tsx` |
@@ -60,6 +61,24 @@ src/
 ```
 
 Fiecare componentă stă în folderul ei, cu `Component.tsx`, `Component.module.css` și `index.ts`.
+
+## Butonul primary („lava")
+
+Varianta `primary` are o suprafață animată de tip *metaball*: opt forme neclarizate
+orbitează, iar filtrul SVG `#btn-goo` întărește canalul alfa, ceea ce le lipește
+în siluete cu margine dură. Peste tot se aplică un `hue-rotate` lent.
+
+- Markup-ul suprafeței: `src/components/ui/Button/Plasma.tsx` (pur decorativ, `aria-hidden`)
+- Stilurile: blocul „VARIANTA PRIMARY" din `Button.module.css`
+- **Filtrul `#btn-goo` este definit o singură dată**, în `src/components/ui/SvgDefs`,
+  randat din `layout.tsx`. Fără el, suprafața nu se randează — nu îl scoate din layout.
+- Culorile și viteza se schimbă din `--plasma-1` … `--plasma-5`, `--plasma-ink`
+  și `--plasma-speed` (`tokens.css`).
+- Neclaritatea e în `em`, deci efectul rămâne proporțional la orice mărime de buton.
+- La `prefers-reduced-motion` animațiile se opresc și butonul rămâne static.
+
+Textul este maro-închis (`--plasma-ink`), nu alb: pe chihlimbar, albul ar coborî
+sub pragul de contrast WCAG AA.
 
 ## Styleguide
 

@@ -15,6 +15,7 @@ export { MediaPlaceholder } from './MediaPlaceholder';
 export type { MediaRatio, MediaShape } from './MediaPlaceholder';
 export { Reveal } from './Reveal';
 export { Section } from './Section';
+export { SvgDefs } from './SvgDefs';
 export type { SectionTone, SectionSize } from './Section';
 export { Text } from './Text';
 export type { TextSize, TextTone } from './Text';

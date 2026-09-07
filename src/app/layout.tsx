@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter, Lora } from 'next/font/google';
+import { SvgDefs } from '@/components/ui';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { site } from '@/content/site';
@@ -51,6 +52,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <a href="#continut" className="u-skip-link">
           Sari la conținut
         </a>
+        <SvgDefs />
         <Header />
         <main id="continut">{children}</main>
         <Footer />

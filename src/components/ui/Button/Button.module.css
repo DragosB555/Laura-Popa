@@ -1,8 +1,8 @@
 .button {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-2);
   padding: var(--space-3) var(--space-6);
   border: 1px solid transparent;
   border-radius: var(--radius-full);
@@ -30,18 +30,181 @@
   }
 }
 
-/* --- Variante --- */
+/* Continutul sta deasupra suprafetei animate */
+.label {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+}
+
+.icon {
+  flex: none;
+}
+
+/* =========================================================================
+   VARIANTA PRIMARY — suprafata „lava"
+   Cercuri care orbiteaza sunt neclarizate, apoi filtrul SVG #btn-goo
+   intareste canalul alfa, ceea ce le lipeste in forme cu margine dura
+   (efect metaball). Filtrul este definit o singura data, in layout.
+   ========================================================================= */
 .primary {
-  background-color: var(--color-accent);
-  border-color: var(--color-accent);
-  color: var(--color-accent-ink);
+  /* dreptunghi cu colturi rotunjite, nu capsula */
+  border-radius: var(--radius-md);
+  color: var(--plasma-ink);
+  background: none;
+  box-shadow:
+    0 0 25px 0 var(--plasma-3),
+    0 18px 45px -12px var(--plasma-4);
+  animation: plasma-colorize calc(var(--plasma-speed) * 3) ease-in-out infinite;
 }
 
-.primary:hover {
-  background-color: var(--color-accent-strong);
-  border-color: var(--color-accent-strong);
+.plasma {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(180deg, var(--plasma-5), var(--plasma-4));
+  box-shadow:
+    inset 0 1px 0 0 var(--plasma-1),
+    inset 0 -1px 0 0 var(--plasma-2),
+    inset 0 10px 10px 0 var(--plasma-3),
+    inset 0 -10px 10px 0 var(--plasma-4);
 }
 
+/* Intarirea canalului alfa — lipeste blob-urile intre ele */
+.goo {
+  position: absolute;
+  inset: -30% -6%;
+  filter: url('#btn-goo');
+}
+
+/* Neclaritatea care „respira" — cat de topite sunt formele intre ele */
+.gooBlur {
+  position: absolute;
+  inset: 0;
+  filter: blur(0.34em);
+  animation: plasma-roundness calc(var(--plasma-speed) / 2) ease-in-out infinite;
+}
+
+/* Corpul continuu: garanteaza ca butonul ramane plin la orice latime */
+.blobBase {
+  position: absolute;
+  inset: 37% 5%;
+  border-radius: var(--radius-full);
+  background: linear-gradient(180deg, var(--plasma-1) 35%, var(--plasma-2) 88%);
+}
+
+.blob {
+  position: absolute;
+  height: 66%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: linear-gradient(180deg, var(--plasma-1) 35%, var(--plasma-2) 88%);
+  animation: plasma-orbit var(--plasma-speed) linear infinite;
+}
+
+.blob:nth-child(2) {
+  left: 1%;
+  top: 20%;
+  transform-origin: 150% 50%;
+  animation-direction: reverse;
+}
+
+.blob:nth-child(3) {
+  left: 15%;
+  top: 12%;
+  height: 80%;
+  transform-origin: 50% 140%;
+  animation-delay: calc(var(--plasma-speed) / -5);
+}
+
+.blob:nth-child(4) {
+  left: 30%;
+  top: 22%;
+  transform-origin: -40% 50%;
+  animation-direction: reverse;
+  animation-delay: calc(var(--plasma-speed) / -2.2);
+}
+
+.blob:nth-child(5) {
+  left: 44%;
+  top: 10%;
+  height: 82%;
+  transform-origin: 50% -30%;
+  animation-delay: calc(var(--plasma-speed) / -1.4);
+}
+
+.blob:nth-child(6) {
+  left: 59%;
+  top: 20%;
+  transform-origin: 140% 50%;
+  animation-direction: reverse;
+  animation-delay: calc(var(--plasma-speed) / -3);
+}
+
+.blob:nth-child(7) {
+  left: 73%;
+  top: 14%;
+  height: 78%;
+  transform-origin: 50% 150%;
+  animation-delay: calc(var(--plasma-speed) / -1.7);
+}
+
+.blob:nth-child(8) {
+  right: 1%;
+  top: 21%;
+  transform-origin: -50% 50%;
+  animation-direction: reverse;
+  animation-delay: calc(var(--plasma-speed) / -2.6);
+}
+
+@keyframes plasma-orbit {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes plasma-roundness {
+  0%,
+  100% {
+    filter: blur(0.34em);
+  }
+  30%,
+  60% {
+    filter: blur(0.17em);
+  }
+}
+
+@keyframes plasma-colorize {
+  0%,
+  100% {
+    filter: hue-rotate(0deg);
+  }
+  20% {
+    filter: hue-rotate(-30deg);
+  }
+  40% {
+    filter: hue-rotate(-60deg);
+  }
+  60% {
+    filter: hue-rotate(-90deg);
+  }
+  80% {
+    filter: hue-rotate(-45deg);
+  }
+}
+
+/* =========================================================================
+   CELELALTE VARIANTE
+   ========================================================================= */
 .secondary {
   background-color: transparent;
   border-color: var(--color-border-strong);
@@ -96,17 +259,6 @@
 }
 
 /* --- Pe fundal inchis --- */
-.onInverse.primary {
-  background-color: var(--color-ink-inverse);
-  border-color: var(--color-ink-inverse);
-  color: var(--color-ink);
-}
-
-.onInverse.primary:hover {
-  background-color: #ffffff;
-  border-color: #ffffff;
-}
-
 .onInverse.secondary {
   border-color: var(--color-border-inverse);
   color: var(--color-ink-inverse);
@@ -122,8 +274,4 @@
 
 .fullWidth {
   width: 100%;
-}
-
-.icon {
-  flex: none;
 }

@@ -2,6 +2,7 @@ import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from 'reac
 import Link from 'next/link';
 import { cx } from '@/lib/cx';
 import { ArrowIcon } from '@/components/ui/ArrowIcon';
+import { Plasma } from './Plasma';
 import styles from './Button.module.css';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'link';
@@ -28,7 +29,7 @@ type CommonProps = {
   size?: ButtonSize;
   /** Adauga sageata `→` la final. */
   withArrow?: boolean;
-  /** Ajusteaza culorile pentru fundal inchis. */
+  /** Ajusteaza culorile pentru fundal inchis (nu afecteaza varianta `primary`). */
   onInverse?: boolean;
   /** Ocupa toata latimea disponibila (util pe mobil). */
   fullWidth?: boolean;
@@ -68,8 +69,11 @@ export function Button({
 
   const content = (
     <>
-      {children}
-      {withArrow ? <ArrowIcon className={styles.icon} /> : null}
+      {variant === 'primary' ? <Plasma /> : null}
+      <span className={styles.label}>
+        {children}
+        {withArrow ? <ArrowIcon className={styles.icon} /> : null}
+      </span>
     </>
   );
 
