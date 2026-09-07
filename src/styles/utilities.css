@@ -1,0 +1,86 @@
+/* =========================================================================
+   UTILITARE GLOBALE — clase mici, reutilizabile, folosite peste tot
+   ========================================================================= */
+
+/* Ascunde vizual, dar ramane citit de screen readers */
+.u-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Echilibreaza randurile unui titlu scurt */
+.u-balance {
+  text-wrap: balance;
+}
+
+/* Evita cuvinte orfane in paragrafe */
+.u-pretty {
+  text-wrap: pretty;
+}
+
+/* Limiteaza latimea randului pentru lizibilitate */
+.u-measure-narrow {
+  max-width: var(--measure-narrow);
+}
+.u-measure {
+  max-width: var(--measure);
+}
+.u-measure-wide {
+  max-width: var(--measure-wide);
+}
+
+/* Link de skip pentru navigare cu tastatura */
+.u-skip-link {
+  position: absolute;
+  top: var(--space-2);
+  left: var(--space-2);
+  z-index: var(--z-modal);
+  padding: var(--space-3) var(--space-4);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  transform: translateY(-200%);
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.u-skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+/* Animatie de intrare la scroll — vezi hook-ul useReveal */
+.u-reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity var(--duration-slow) var(--ease-out),
+    transform var(--duration-slow) var(--ease-out);
+}
+
+.u-reveal[data-revealed='true'] {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .u-reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Fara JavaScript animatia nu poate porni — continutul ramane vizibil. */
+@media (scripting: none) {
+  .u-reveal {
+    opacity: 1;
+    transform: none;
+  }
+}

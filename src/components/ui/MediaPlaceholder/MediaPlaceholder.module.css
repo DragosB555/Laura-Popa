@@ -1,0 +1,37 @@
+.media {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background-color: var(--color-bg-alt);
+  background-image: linear-gradient(135deg, var(--color-bg-alt) 0%, var(--color-accent-soft) 100%);
+  color: var(--color-ink-soft);
+}
+
+.rounded {
+  border-radius: var(--radius-xl);
+}
+
+.circle {
+  border-radius: var(--radius-full);
+}
+
+.label {
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

@@ -1,0 +1,43 @@
+.section {
+  position: relative;
+  padding-block: var(--section-y);
+}
+
+/* --- Dimensiune --- */
+.sizeSm {
+  padding-block: var(--section-y-sm);
+}
+.sizeLg {
+  padding-block: var(--section-y-lg);
+}
+
+/* --- Ton cromatic --- */
+.toneDefault {
+  background-color: var(--color-bg);
+}
+
+.toneAlt {
+  background-color: var(--color-bg-alt);
+}
+
+.toneSurface {
+  background-color: var(--color-surface);
+}
+
+.toneInverse {
+  background-color: var(--color-bg-inverse);
+  color: var(--color-ink-inverse);
+}
+
+.toneAccent {
+  background-color: var(--color-accent-soft);
+}
+
+/* Linie fina de separare, optionala */
+.divided {
+  border-top: 1px solid var(--color-border);
+}
+
+.toneInverse.divided {
+  border-top-color: var(--color-border-inverse);
+}

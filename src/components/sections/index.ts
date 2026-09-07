@@ -1,0 +1,9 @@
+export { Hero } from './Hero';
+export { Reasons } from './Reasons';
+export { TherapyForYou } from './TherapyForYou';
+export { Process } from './Process';
+export { Listened } from './Listened';
+export { About } from './About';
+export { FirstSession } from './FirstSession';
+export { Faq } from './Faq';
+export { FinalCta } from './FinalCta';
