@@ -77,7 +77,7 @@
 }
 
 /* Pe telefon textul si butonul ocupa mai mult pe inaltime: blocul urca mai
-   mult, ca butonul sa nu ajunga peste indicator. */
+   mult, sa stea echilibrat in cutie. */
 @media (max-width: 40rem) {
   .head {
     transform: translateY(-14svh);
@@ -191,4 +191,11 @@
     var(--color-ink-inverse)
   );
   opacity: 0.8;
+}
+
+/* Pe telefon intro-ul merge singur, fara derulare, deci indicatorul nu are rost. */
+@media (max-width: 47.999rem) {
+  .scrollHint {
+    display: none;
+  }
 }
