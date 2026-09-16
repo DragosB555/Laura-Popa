@@ -13,10 +13,11 @@ import {
 import styles from './CookieBanner.module.css';
 
 /**
- * Bannerul de cookie-uri: un card lat, jos, cu fursec, text si butoane.
+ * Bannerul de cookie-uri: un card jos, cu fursec, text si „Accept”.
  *
- * Apare doar daca vizitatorul nu a ales inca (sau alegerea a expirat) si
- * revine din „Setări cookies”, in contact. Se randeaza abia in browser, ca
+ * Apare cat timp vizitatorul nu a acceptat (sau acordul a expirat) si revine
+ * din „Setări cookies”, in contact. Fara „Accept”, Google Analytics nu se
+ * incarca. Se randeaza abia in browser, ca
  * pagina generata la build sa nu-l contina deja deschis.
  */
 export function CookieBanner() {
@@ -67,9 +68,6 @@ export function CookieBanner() {
       </p>
 
       <div className={styles.actions}>
-        <button type="button" className={`${styles.reject} u-squircle`} onClick={() => choose('denied')}>
-          {copy.reject}
-        </button>
         <button type="button" className={`${styles.accept} u-squircle`} onClick={() => choose('granted')}>
           {copy.accept}
         </button>
@@ -78,8 +76,21 @@ export function CookieBanner() {
   );
 }
 
-/** „Setări cookies”: redeschide bannerul. */
+/**
+ * In contact si pe pagina de confidentialitate. Cu acordul dat, il retrage;
+ * altfel redeschide bannerul, ca vizitatorul sa poata accepta.
+ */
 export function CookieSettingsButton({ className }: { className?: string }) {
+  const consent = useConsent();
+
+  if (consent === 'granted') {
+    return (
+      <button type="button" className={className} onClick={() => writeConsent('denied')}>
+        {legal.footer.withdraw}
+      </button>
+    );
+  }
+
   return (
     <button type="button" className={className} onClick={openConsentSettings}>
       {legal.footer.settings}

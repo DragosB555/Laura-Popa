@@ -45,11 +45,11 @@ export const legal = {
     cookiesLink: 'politica cookies',
     after: ' pentru mai multe informații.',
     accept: 'Accept',
-    reject: 'Refuz',
   },
   footer: {
     privacy: 'Politica de confidențialitate',
     settings: 'Setări cookies',
+    withdraw: 'Retrage acordul pentru cookies',
   },
 };
 

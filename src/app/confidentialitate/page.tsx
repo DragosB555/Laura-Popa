@@ -18,7 +18,7 @@ const cookies = [
   {
     name: 'lp-cookie-consent',
     provider: site.domain,
-    purpose: 'Reține dacă ai acceptat sau ai refuzat cookie-urile de analiză.',
+    purpose: 'Reține dacă ai acceptat cookie-urile de analiză sau ți-ai retras acordul.',
     type: 'Strict necesar (stocare locală în browser)',
     duration: '12 luni',
   },
@@ -99,8 +99,8 @@ export default function PrivacyPage() {
             <p>
               Cookie-urile sunt fișiere mici pe care un site le salvează în browserul tău. Folosim doar
               cookie-uri de analiză, prin Google Analytics, și numai dacă apeși „Accept” în bannerul de
-              cookie-uri. Dacă apeși „Refuz”, nu se încarcă niciun script Google și nu se salvează niciun
-              cookie de analiză.
+              cookie-uri. Până nu apeși „Accept”, nu se încarcă niciun script Google și nu se salvează
+              niciun cookie de analiză.
             </p>
 
             <div className={styles.tableWrap}>
@@ -131,8 +131,9 @@ export default function PrivacyPage() {
             </div>
 
             <p>
-              Îți poți schimba alegerea oricând: <CookieSettingsButton className={styles.inlineButton} />.
-              Poți șterge cookie-urile și din setările browserului.
+              Dacă ai acceptat, îți poți retrage acordul oricând, iar cookie-urile de analiză se șterg:{' '}
+              <CookieSettingsButton className={styles.inlineButton} />. Poți șterge cookie-urile și din
+              setările browserului.
             </p>
           </section>
 

@@ -33,8 +33,8 @@ function setMeasurementDisabled(id: string, disabled: boolean) {
  * Google Analytics 4, incarcat doar dupa acord.
  *
  * Pana la „Accept” nu se incarca niciun script Google si nu se pune niciun
- * cookie. La „Refuz” dupa un acord anterior, masurarea se opreste pe loc si
- * cookie-urile `_ga` se sterg. In dezvoltare (localhost) nu masoara nimic.
+ * cookie. Daca acordul e retras, masurarea se opreste pe loc si cookie-urile
+ * `_ga` se sterg. In dezvoltare (localhost) nu masoara nimic.
  */
 export function Analytics() {
   const consent = useConsent();

@@ -9,7 +9,7 @@
   grid-template-columns: auto 1fr;
   align-items: center;
   gap: var(--space-4);
-  max-width: 72rem;
+  max-width: 54rem;
   margin-inline: auto;
   padding: var(--space-5);
   border-radius: 2rem;
@@ -43,7 +43,7 @@
 }
 
 .text {
-  font-size: var(--text-sm);
+  font-size: var(--text-base);
   line-height: var(--leading-relaxed);
   color: var(--color-ink-muted);
 }
@@ -71,14 +71,11 @@
   flex: 1;
 }
 
-/* „Accept” si „Refuz” au aceeasi marime: alegerea e la fel de usoara in
-   ambele sensuri. Accept e cel colorat, ca in restul site-ului. */
-.accept,
-.reject {
+.accept {
   min-height: 3rem;
   padding: 0 var(--space-6);
   border-radius: 1.125rem;
-  font-size: var(--text-sm);
+  font-size: var(--text-base);
   font-weight: var(--weight-semibold);
   white-space: nowrap;
   transition:
@@ -101,21 +98,12 @@
   filter: brightness(1.08);
 }
 
-.reject {
-  color: var(--color-ink-muted);
-  background-color: color-mix(in srgb, var(--color-ink) 6%, transparent);
-}
-
-.reject:hover {
-  background-color: color-mix(in srgb, var(--color-ink) 11%, transparent);
-}
-
 /* Pe ecrane late: fursec, text si butoane pe un singur rand. */
 @media (min-width: 48rem) {
   .banner {
     grid-template-columns: auto 1fr auto;
-    gap: var(--space-6);
-    padding: var(--space-6) var(--space-8);
+    gap: var(--space-5);
+    padding: var(--space-5) var(--space-6) var(--space-5) var(--space-8);
     border-radius: 2.5rem;
   }
 
@@ -128,8 +116,7 @@
     grid-column: auto;
   }
 
-  .accept,
-  .reject {
+  .accept {
     min-width: 7.5rem;
     min-height: 3.25rem;
   }
