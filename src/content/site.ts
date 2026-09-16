@@ -11,7 +11,7 @@ export const site = {
   /** Folosit în <title> și Open Graph. */
   tagline: 'Un spațiu în care poți spune lucrurile exact așa cum sunt.',
   description:
-    'Coaching de viață, coaching de carieră și dezvoltare personală cu Laura Popa, în București (Sectorul 5) sau online. Prima ședință este gratuită.',
+    'Coaching de viață, coaching de carieră și dezvoltare personală cu Laura Popa, în București (Sectorul 6) sau online. Prima ședință este gratuită.',
   /** Adresa site-ului, fara slash la capat — folosita pentru metadata, sitemap și robots. */
   url: 'https://laurapopa.com',
   /** Domeniul afisat (pe imaginea de distribuire). */
@@ -21,9 +21,9 @@ export const site = {
   /** Link scurt de WhatsApp, generat din contul de business. */
   whatsapp: 'https://wa.link/pg69w7',
   /** Fiecare element pe randul lui. */
-  location: ['București, Sectorul 5', 'Online'],
+  location: ['București, Sectorul 6', 'Online'],
   /** Adresa pentru datele structurate (Google). */
-  address: { locality: 'București', region: 'Sectorul 5', country: 'RO' },
+  address: { locality: 'București', region: 'Sectorul 6', country: 'RO' },
 };
 
 /* ------------------------------------------------------------------ SEO */
