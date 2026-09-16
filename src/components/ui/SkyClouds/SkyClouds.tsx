@@ -174,8 +174,8 @@ const OPEN_AT = 0.7;
 /** Pe ecranele astea cerul se insenineaza singur, fara derulare. */
 const INTRO_QUERY = '(max-width: 47.999rem)';
 /** Pauza de la incarcare pana porneste intro-ul si durata lui. */
-const INTRO_DELAY_MS = 400;
-const INTRO_MS = 3800;
+const INTRO_DELAY_MS = 300;
+const INTRO_MS = 2800;
 
 export function SkyClouds({
   trackRef,
