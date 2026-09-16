@@ -18,6 +18,14 @@
   height: calc(100svh + var(--sky-scroll));
 }
 
+/* Pe telefon cerul se insenineaza singur, ca intro, deci hero-ul are doar
+   inaltimea ecranului: nu mai e nimic de derulat prin el. */
+@media (max-width: 47.999rem) {
+  .hero {
+    --sky-scroll: 0svh;
+  }
+}
+
 /* Tinta ancorei: acolo unde s-a terminat inseninarea. Browserul scade
    `scroll-padding-top` cand sare la ea, asa ca il adaugam inapoi. */
 .anchor {

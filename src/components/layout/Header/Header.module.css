@@ -237,17 +237,12 @@
       filter 260ms var(--ease-out) 220ms;
   }
 
-  /* Butonul de meniu e mereu o bula cacao cu linii albe, si in bara intreaga,
-     si strans. Umbra apare doar cand ramane singur peste pagina, lin. */
+  /* Butonul de meniu e mereu o bula cacao cu linii albe, fara umbra: pe
+     fundal deschis umbra facea un halou murdar in jurul ei. */
   .menuButton {
     flex: none;
     background-color: var(--color-panel);
     color: #ffffff;
-    transition: box-shadow 700ms var(--ease-in-out-soft) 120ms;
-  }
-
-  .header[data-compact='true'] .menuButton {
-    box-shadow: 0 12px 28px -12px var(--color-panel-shadow);
   }
 
   /* Capsula sta deasupra cutiei meniului. */
@@ -261,10 +256,6 @@
     background-color: transparent;
     box-shadow: none;
     backdrop-filter: none;
-  }
-
-  .header[data-menu-open='true'] .menuButton {
-    box-shadow: none;
   }
 
   /* Strans, capsula dispare si ramane doar bula butonului: pe pagina crem

@@ -15,7 +15,10 @@
 .veil {
   position: absolute;
   inset: auto 0 0 0;
-  height: var(--contact-height);
+  /* Putin mai inalta decat banda: colturile rotunjite ale paginii si umbra ei
+     lasa sa se vada si deasupra benzii, iar acolo marginea panzei se vedea
+     ca o linie. */
+  height: calc(var(--contact-height) + 12rem);
   z-index: 0;
 }
 

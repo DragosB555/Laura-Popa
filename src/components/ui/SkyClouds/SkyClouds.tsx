@@ -17,7 +17,9 @@ import styles from './SkyClouds.module.css';
 
    Cerul trece de la intunecat la un senin cald de rasarit. Cat de senin e se
    citeste din derularea prin `trackRef`: 0 cand elementul abia a ajuns sus,
-   1 cand l-ai derulat pana la capat. Valoarea e scrisa pe element ca
+   1 cand l-ai derulat pana la capat. Pe telefon nu se leaga de derulare:
+   cerul se insenineaza singur, ca intro, in cateva secunde de la incarcare.
+   Valoarea e scrisa pe element ca
    `--sky-clear`, iar `data-sky="open"` apare cand cerul e aproape senin —
    ca textul si butonul de deasupra sa se poata lua dupa ele.
    ========================================================================= */
@@ -169,6 +171,11 @@ const RENDER_SCALE = 1 / 2;
 const FRAME_MS = 1000 / 30;
 /** De aici incolo cerul e considerat senin: apar textul si butonul. */
 const OPEN_AT = 0.7;
+/** Pe ecranele astea cerul se insenineaza singur, fara derulare. */
+const INTRO_QUERY = '(max-width: 47.999rem)';
+/** Pauza de la incarcare pana porneste intro-ul si durata lui. */
+const INTRO_DELAY_MS = 600;
+const INTRO_MS = 6500;
 
 export function SkyClouds({
   trackRef,
@@ -214,8 +221,18 @@ export function SkyClouds({
     const initial = initialRef.current;
     const color = (hex: string) => ({ value: new Float32Array(hexToRgb(hex)) });
 
-    /* Cat de senin e, dupa cat ai derulat prin element. */
+    const introQuery = window.matchMedia(INTRO_QUERY);
+    const introReduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const introStartedAt = performance.now();
+
+    /* Cat de senin e: pe telefon dupa timpul scurs de la incarcare, altfel
+       dupa cat ai derulat prin element. */
     const readClear = () => {
+      if (introQuery.matches) {
+        if (introReduced.matches) return 1;
+        const elapsed = performance.now() - introStartedAt - INTRO_DELAY_MS;
+        return Math.min(1, Math.max(0, elapsed / INTRO_MS));
+      }
       const track = trackRef?.current;
       if (!track) return 1;
       const rect = track.getBoundingClientRect();
@@ -256,10 +273,21 @@ export function SkyClouds({
         powerPreference: 'low-power',
       });
     } catch {
-      /* Fara WebGL ramane gradientul din CSS; textul se ia tot dupa derulare. */
+      /* Fara WebGL ramane gradientul din CSS; textul se ia tot dupa derulare,
+         iar pe telefon dupa timp. */
       const onScrollOnly = () => publish(readClear());
       window.addEventListener('scroll', onScrollOnly, { passive: true });
-      return () => window.removeEventListener('scroll', onScrollOnly);
+      let introFrame = 0;
+      const introTick = () => {
+        const value = readClear();
+        publish(value);
+        if (introQuery.matches && value < 1) introFrame = requestAnimationFrame(introTick);
+      };
+      introTick();
+      return () => {
+        cancelAnimationFrame(introFrame);
+        window.removeEventListener('scroll', onScrollOnly);
+      };
     }
 
     const gl = renderer.gl;
