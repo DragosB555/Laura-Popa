@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { Mulish } from 'next/font/google';
 import { Header } from '@/components/layout/Header';
 import { SmoothScroll } from '@/components/layout/SmoothScroll';
-import { StructuredData } from '@/components/layout/StructuredData';
+import { Analytics, CookieBanner } from '@/components/layout/CookieConsent';
 import { FinalCta } from '@/components/sections';
 import { anchors, seo, site } from '@/content/site';
 import './globals.css';
@@ -74,7 +74,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <a href="#continut" className="u-skip-link">
           Sari la conținut
         </a>
-        <StructuredData />
         <SmoothScroll />
         <Header />
         {/* Pagina aluneca peste contact, care sta fixat dedesubt. */}
@@ -92,6 +91,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </div>
 
         <FinalCta />
+        <CookieBanner />
+        <Analytics />
       </body>
     </html>
   );

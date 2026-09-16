@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Button, Collapse, Container, Logo } from '@/components/ui';
 import { anchors, nav, site } from '@/content/site';
 import styles from './Header.module.css';
@@ -11,6 +12,10 @@ export function Header() {
   /* Dupa hero, pe telefon si tableta, bara se strange doar pe butonul de meniu. */
   const [isCompact, setIsCompact] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  /* Sectiunile sunt pe prima pagina; de pe alta pagina linkurile duc acolo.
+     Contactul e pe fiecare pagina, deci ramane ancora simpla. */
+  const pathname = usePathname();
+  const toSection = (href: string) => (pathname === '/' ? href : `/${href}`);
 
   useEffect(() => {
     const hero = document.getElementById(anchors.hero)?.closest('section');
@@ -33,7 +38,7 @@ export function Header() {
       <Container size="xl">
         <div className={styles.inner}>
           <Link
-            href={`#${anchors.hero}`}
+            href={toSection(`#${anchors.hero}`)}
             className={styles.brand}
             aria-hidden={isCompact || undefined}
             tabIndex={isCompact ? -1 : undefined}
@@ -46,7 +51,7 @@ export function Header() {
             <ul className={styles.navList}>
               {nav.links.map((link) => (
                 <li key={link.href}>
-                  <Link href={link.href} className={styles.navLink}>
+                  <Link href={toSection(link.href)} className={styles.navLink}>
                     {link.label}
                   </Link>
                 </li>
@@ -78,7 +83,7 @@ export function Header() {
             <ul className={styles.mobileList}>
               {nav.links.map((link) => (
                 <li key={link.href}>
-                  <Link href={link.href} className={styles.mobileLink} onClick={() => setIsMenuOpen(false)}>
+                  <Link href={toSection(link.href)} className={styles.mobileLink} onClick={() => setIsMenuOpen(false)}>
                     {link.label}
                   </Link>
                 </li>

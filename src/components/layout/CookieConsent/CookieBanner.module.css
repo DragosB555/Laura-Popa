@@ -1,0 +1,143 @@
+/* Card lat, plutitor la baza ecranului: suprafata deschisa si translucida,
+   colturi mari, umbra moale. Pe telefon butoanele trec sub text. */
+.banner {
+  position: fixed;
+  z-index: var(--z-overlay);
+  inset-inline: var(--hero-inset);
+  inset-block-end: var(--hero-inset);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: var(--space-4);
+  max-width: 72rem;
+  margin-inline: auto;
+  padding: var(--space-5);
+  border-radius: 2rem;
+  background-color: color-mix(in srgb, var(--color-surface) 90%, transparent);
+  backdrop-filter: saturate(150%) blur(18px);
+  box-shadow: 0 24px 60px -24px rgba(30, 20, 12, 0.35);
+  /* Intra de jos, cu o mica intarziere dupa incarcarea paginii. */
+  animation: banner-in 550ms var(--ease-out) 700ms both;
+  transition:
+    opacity 400ms var(--ease-out),
+    translate 400ms var(--ease-out);
+}
+
+.banner[data-closing='true'] {
+  animation: none;
+  opacity: 0;
+  translate: 0 1.5rem;
+}
+
+@keyframes banner-in {
+  from {
+    opacity: 0;
+    translate: 0 1.5rem;
+  }
+}
+
+.cookie {
+  align-self: start;
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.text {
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+  color: var(--color-ink-muted);
+}
+
+.link {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--color-accent) 35%, transparent);
+  text-underline-offset: 0.2em;
+  transition: text-decoration-color var(--duration-fast) var(--ease-out);
+}
+
+.link:hover {
+  text-decoration-color: currentColor;
+}
+
+.actions {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.actions > * {
+  flex: 1;
+}
+
+/* „Accept” si „Refuz” au aceeasi marime: alegerea e la fel de usoara in
+   ambele sensuri. Accept e cel colorat, ca in restul site-ului. */
+.accept,
+.reject {
+  min-height: 3rem;
+  padding: 0 var(--space-6);
+  border-radius: 1.125rem;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  white-space: nowrap;
+  transition:
+    filter var(--duration-base) var(--ease-out),
+    background-color var(--duration-base) var(--ease-out);
+}
+
+.accept {
+  color: #ffffff;
+  background-image: linear-gradient(
+    165deg,
+    color-mix(in srgb, var(--color-accent) 88%, #ffffff) 0%,
+    var(--color-accent) 45%,
+    var(--color-accent-strong) 100%
+  );
+  box-shadow: 0 12px 24px -12px var(--color-panel-shadow);
+}
+
+.accept:hover {
+  filter: brightness(1.08);
+}
+
+.reject {
+  color: var(--color-ink-muted);
+  background-color: color-mix(in srgb, var(--color-ink) 6%, transparent);
+}
+
+.reject:hover {
+  background-color: color-mix(in srgb, var(--color-ink) 11%, transparent);
+}
+
+/* Pe ecrane late: fursec, text si butoane pe un singur rand. */
+@media (min-width: 48rem) {
+  .banner {
+    grid-template-columns: auto 1fr auto;
+    gap: var(--space-6);
+    padding: var(--space-6) var(--space-8);
+    border-radius: 2.5rem;
+  }
+
+  .cookie {
+    align-self: center;
+    font-size: 2.75rem;
+  }
+
+  .actions {
+    grid-column: auto;
+  }
+
+  .accept,
+  .reject {
+    min-width: 7.5rem;
+    min-height: 3.25rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .banner {
+    animation: none;
+    transition: none;
+  }
+}

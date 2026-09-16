@@ -8,6 +8,7 @@ import {
   Reasons,
   TherapyForYou,
 } from '@/components/sections';
+import { StructuredData } from '@/components/layout/StructuredData';
 
 /**
  * Pagina principală — o secțiune per componentă, în ordinea din brief.
@@ -21,6 +22,7 @@ import {
 export default function HomePage() {
   return (
     <>
+      <StructuredData />
       <Hero />
       <Motto />
       <Reasons />

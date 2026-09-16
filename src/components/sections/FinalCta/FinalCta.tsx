@@ -1,6 +1,8 @@
+import Link from 'next/link';
 import { Mail, MapPin, MessageCircle, Phone } from 'lucide-react';
+import { CookieSettingsButton } from '@/components/layout/CookieConsent';
 import { BackdropHeading, Container, DarkVeil } from '@/components/ui';
-import { final, site } from '@/content/site';
+import { final, legal, site } from '@/content/site';
 import styles from './FinalCta.module.css';
 
 /** Cifrele din numar, pentru linkul `tel:`. */
@@ -83,6 +85,14 @@ export function FinalCta() {
               </span>
             </li>
           </ul>
+
+          <p className={styles.legal}>
+            <Link href={legal.privacyPath} className={styles.legalLink}>
+              {legal.footer.privacy}
+            </Link>
+            <span aria-hidden="true">·</span>
+            <CookieSettingsButton className={styles.legalLink} />
+          </p>
         </Container>
       </div>
     </section>

@@ -26,6 +26,33 @@ export const site = {
   address: { locality: 'București', region: 'Sectorul 6', country: 'RO' },
 };
 
+/* ------------------------------------------------------------ Analytics */
+export const analytics = {
+  /** ID-ul de masurare Google Analytics 4. */
+  gaId: 'G-YQ2ZQTMP1K',
+};
+
+/* ------------------------------------------------------ Cookies / GDPR */
+export const legal = {
+  privacyPath: '/confidentialitate',
+  cookiesPath: '/confidentialitate#cookies',
+  banner: {
+    label: 'Acord pentru cookie-uri',
+    /* Textul e impartit ca linkurile sa stea in fraza. */
+    before: 'Folosim cookie-uri de analiză (Google Analytics) doar dacă ești de acord, ca să înțelegem cum este folosit site-ul și să-l îmbunătățim. Consultă ',
+    privacyLink: 'politica de confidențialitate',
+    between: ' și ',
+    cookiesLink: 'politica cookies',
+    after: ' pentru mai multe informații.',
+    accept: 'Accept',
+    reject: 'Refuz',
+  },
+  footer: {
+    privacy: 'Politica de confidențialitate',
+    settings: 'Setări cookies',
+  },
+};
+
 /* ------------------------------------------------------------------ SEO */
 export const seo = {
   /** Titlul din Google si din tab. Sub ~60 de caractere, ca sa nu fie taiat. */

@@ -1,0 +1,112 @@
+/* Pagina de text juridic: o coloana lizibila, sub bara de sus, cu aer
+   dedesubt inainte ca pagina sa urce peste contact. */
+.page {
+  padding-block: calc(var(--header-height) + var(--space-8)) var(--space-24);
+}
+
+.intro {
+  margin-block-end: var(--space-12);
+}
+
+.title {
+  font-family: var(--font-serif);
+  font-size: var(--text-3xl);
+  font-weight: var(--weight-semibold);
+  line-height: 1.1;
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-ink);
+  text-wrap: balance;
+}
+
+.updated {
+  margin-block-start: var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--color-ink-soft);
+}
+
+.body {
+  display: grid;
+  gap: var(--space-10);
+  font-size: var(--text-md);
+  line-height: var(--leading-relaxed);
+  color: var(--color-ink-muted);
+}
+
+.body section {
+  display: grid;
+  gap: var(--space-4);
+  scroll-margin-top: calc(var(--header-height) + var(--space-4));
+}
+
+.body h2 {
+  font-family: var(--font-serif);
+  font-size: var(--text-xl);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-snug);
+  color: var(--color-ink);
+}
+
+.body ul {
+  display: grid;
+  gap: var(--space-3);
+  padding-inline-start: 1.25rem;
+  list-style: disc;
+}
+
+.body strong {
+  font-weight: var(--weight-semibold);
+  color: var(--color-ink);
+}
+
+.body a,
+.inlineButton {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--color-accent) 35%, transparent);
+  text-underline-offset: 0.2em;
+}
+
+.body a:hover,
+.inlineButton:hover {
+  text-decoration-color: currentColor;
+}
+
+.inlineButton {
+  font: inherit;
+}
+
+/* Tabelul poate derula pe orizontala pe telefon, fara sa lateasca pagina. */
+.tableWrap {
+  overflow-x: auto;
+  border-radius: var(--radius-xl);
+  background-color: var(--color-surface);
+}
+
+.table {
+  width: 100%;
+  min-width: 40rem;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+  line-height: var(--leading-snug);
+}
+
+.table th,
+.table td {
+  padding: var(--space-3) var(--space-4);
+  text-align: start;
+  vertical-align: top;
+}
+
+.table th {
+  font-weight: var(--weight-semibold);
+  color: var(--color-ink);
+}
+
+.table tbody tr {
+  border-top: 1px solid var(--color-border);
+}
+
+.table code {
+  font-size: 0.95em;
+  white-space: nowrap;
+}
