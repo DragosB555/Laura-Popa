@@ -1,0 +1,97 @@
+/* Ancoreaza textul decorativ pe zona titlului. Marginea de jos e distanta
+   pana la continutul sectiunii — o tinem aici, ca sa fie egala peste tot. */
+.head {
+  position: relative;
+  margin-block-end: clamp(var(--space-16), 8vw, var(--space-24));
+}
+
+/* Doua randuri mari in culoarea primara, estompate de sus in jos. */
+.backdrop {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline: 0;
+  transform: translateY(-50%);
+  z-index: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: var(--font-serif);
+  /* Pe telefon cresc cu latimea ecranului, ca sa umple spatiul din spate. */
+  font-size: clamp(3.5rem, 18vw, 6.5rem);
+  /* Capatul de sus al axei variabile din Mulish. */
+  font-weight: 1000;
+  line-height: 0.9;
+  /* Masca decupeaza la border box, iar cu line-height subunitar glifele ies
+     din cutie (circumflexe, coborâtoare). Padding-ul le aduce inauntru. */
+  padding-block: 0.16em;
+  letter-spacing: var(--tracking-tight);
+  /* Degrade maro-pe-maro, taiat in litere: cacao sus, mocha jos. Inainte era o
+     culoare plata, iar masca o stingea spre fundal — adica maro spre crem.
+     Reglabile, ca acelasi titlu sa mearga si pe suprafete inchise. */
+  background-image: linear-gradient(
+    to bottom,
+    var(--backdrop-from, var(--backdrop-color, var(--color-accent))) 0%,
+    var(--backdrop-to, var(--backdrop-color, var(--color-mocha))) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  opacity: 0;
+  transition: opacity var(--duration-reveal) var(--ease-out);
+  pointer-events: none;
+  user-select: none;
+}
+
+.backdrop[data-revealed='true'] {
+  opacity: var(--backdrop-opacity, 0.14);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .backdrop {
+    opacity: var(--backdrop-opacity, 0.14);
+    transition: none;
+  }
+}
+
+/* Fara JavaScript aprinderea nu poate porni — textul ramane la locul lui. */
+@media (scripting: none) {
+  .backdrop {
+    opacity: var(--backdrop-opacity, 0.14);
+  }
+}
+
+/* Parallax: randurile mari aluneca invers fata de pagina, pe masura ce
+   sectiunea trece prin ecran. Legat de scroll, nu de timp, deci schimba
+   directia odata cu el. Valorile din keyframes sunt literale: custom
+   properties nu se interpoleaza in keyframes. */
+@keyframes backdrop-drift {
+  from {
+    transform: translateY(calc(-50% + 1rem));
+  }
+  to {
+    transform: translateY(calc(-50% - 1rem));
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .backdrop {
+      animation-name: backdrop-drift;
+      animation-duration: auto;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: view();
+      /* Longhand-uri, ca peste tot in proiect: scurtatura `animation-range` se
+         parseaza inconsecvent. */
+      animation-range-start: entry 0%;
+      animation-range-end: exit 100%;
+    }
+  }
+}
+
+.title {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  margin-inline: auto;
+}

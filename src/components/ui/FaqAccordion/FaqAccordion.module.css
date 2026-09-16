@@ -1,0 +1,95 @@
+/* --- Firul de conversatie --- */
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Randurile: intrebarea la stanga, raspunsul la dreapta. */
+.rowIn,
+.rowOut {
+  display: flex;
+  max-width: 100%;
+}
+
+.rowIn {
+  justify-content: flex-start;
+}
+
+.rowOut {
+  justify-content: flex-end;
+  padding-block: var(--space-1) var(--space-2);
+}
+
+/* h3-ul e doar invelisul semantic; bula isi ia latimea din continut. */
+.questionWrap {
+  max-width: 88%;
+}
+
+/* --- Bula de intrebare (mesaj primit) --- */
+.question {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  width: 100%;
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-xl) var(--radius-xl) var(--radius-xl) var(--radius-sm);
+  text-align: left;
+  font-size: var(--text-md);
+  line-height: var(--leading-snug);
+  color: var(--color-ink);
+  background-color: var(--color-surface);
+  box-shadow: 0 1px 2px rgba(31, 29, 26, 0.06);
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.question[aria-expanded='true'] {
+  color: var(--color-accent-strong);
+}
+
+.chevron {
+  flex: none;
+  opacity: 0.5;
+  transition: transform var(--duration-base) var(--ease-out);
+}
+
+.question[aria-expanded='true'] .chevron {
+  transform: rotate(180deg);
+}
+
+/* --- Bula de raspuns (mesaj trimis) --- */
+.answer {
+  display: inline-block;
+  max-width: 88%;
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-xl) var(--radius-xl) var(--radius-sm) var(--radius-xl);
+  background-color: var(--color-accent-soft);
+  color: var(--color-ink);
+  font-size: var(--text-md);
+  line-height: var(--leading-relaxed);
+}
+
+.icon {
+  flex: none;
+  align-self: flex-end;
+  order: 0;
+  font-size: var(--text-lg);
+  line-height: 1;
+  padding: 0 var(--space-2) var(--space-2);
+}
+
+.iconRight {
+  order: 2;
+}
+
+.timestamp {
+  margin-top: var(--space-5);
+  text-align: center;
+  font-size: var(--text-sm);
+  color: var(--color-ink-soft);
+}

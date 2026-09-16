@@ -3,11 +3,13 @@
 import { useEffect, useRef, useState } from 'react';
 
 /**
- * Marcheaza un element ca "vizibil" prima data cand intra in viewport.
- * Folosit de componenta `Reveal` pentru animatia discreta de intrare.
+ * Marcheaza un element ca "vizibil" cat timp e in ecran. Marginile sunt
+ * asimetrice intentionat: apare dupa ce a urcat 30% de la marginea de jos, dar
+ * se stinge abia cand a iesit complet pe sus — altfel s-ar stinge text pe care
+ * inca il citesti. La scroll invers reapare imediat ce reintra.
  * Fara JavaScript, continutul ramane vizibil (vezi `@media (scripting: none)`).
  */
-export function useReveal<T extends HTMLElement>(rootMargin = '0px 0px -80px 0px') {
+export function useReveal<T extends HTMLElement>(rootMargin = '0px 0px -30% 0px') {
   const ref = useRef<T>(null);
   const [isRevealed, setIsRevealed] = useState(false);
 
@@ -17,12 +19,9 @@ export function useReveal<T extends HTMLElement>(rootMargin = '0px 0px -80px 0px
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsRevealed(true);
-          observer.disconnect();
-        }
+        setIsRevealed(entry.isIntersecting);
       },
-      { rootMargin, threshold: 0.05 },
+      { rootMargin, threshold: 0 },
     );
 
     observer.observe(element);

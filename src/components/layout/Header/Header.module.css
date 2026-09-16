@@ -1,25 +1,47 @@
+/* Bara nu se intinde pe toata latimea: pluteste, ca o capsula, la distanta
+   de marginea de sus. Banda din jur ramane transparenta, deci continutul
+   aluneca pe sub ea. */
+/* Fixata, deci nu ocupa spatiu in flux: pagina crem incepe chiar din varful
+   ecranului. Altfel, deasupra ei s-ar vedea o banda din contactul fixat care
+   sta dedesubtul paginii. */
 .header {
-  position: sticky;
+  position: fixed;
   top: 0;
+  inset-inline: 0;
   z-index: var(--z-sticky);
-  background-color: color-mix(in srgb, var(--color-bg) 82%, transparent);
-  backdrop-filter: saturate(150%) blur(12px);
-  border-bottom: 1px solid transparent;
-  transition:
-    border-color var(--duration-base) var(--ease-out),
-    background-color var(--duration-base) var(--ease-out);
+  padding-block: var(--nav-gap);
+  /* Sus coboara in interiorul cutiei din hero, ca bara sa nu stea pe buza ei. */
+  padding-block-start: calc(var(--hero-inset) + var(--space-4));
+  pointer-events: none;
 }
 
-.header[data-scrolled='true'] {
-  border-bottom-color: var(--color-border);
+/* Doar capsula si meniul prind click-uri, nu si banda transparenta din jur. */
+.inner,
+.mobilePanel {
+  pointer-events: auto;
 }
 
 .inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-4);
-  min-height: var(--header-height);
+  gap: var(--space-6);
+  min-height: var(--nav-height);
+  /* Capatul capsulei e complet rotunjit, asa ca marginea fuge de langa text:
+     la acelasi padding, stanga si dreapta par mai stramte decat sus si jos.
+     De aceea pe orizontala e mai mult — optic ies egale. */
+  padding: 1.25em 2em;
+  border-radius: var(--radius-full);
+  background-color: color-mix(in srgb, var(--color-surface) 72%, transparent);
+  backdrop-filter: saturate(150%) blur(14px);
+  /* Nici umbra, nici contur: capsula se desprinde de pagina doar prin blur si
+     prin suprafata ei mai deschisa. */
+  transition: background-color var(--duration-base) var(--ease-out);
+}
+
+/* Dupa primul scroll capsula se aseaza mai ferm peste continut. */
+.header[data-scrolled='true'] .inner {
+  background-color: color-mix(in srgb, var(--color-surface) 88%, transparent);
 }
 
 .brand {
@@ -29,10 +51,13 @@
   line-height: 1.1;
 }
 
+/* Semnatura e SVG: marimea vine din inaltime, latimea urmeaza proportia. */
 .brandName {
-  font-family: var(--font-serif);
-  font-size: var(--text-md);
-  letter-spacing: var(--tracking-tight);
+  display: block;
+  /* Fara asta, coloana flex il intinde cat randul de dedesubt. */
+  align-self: flex-start;
+  width: auto;
+  height: 1.5rem;
   color: var(--color-ink);
 }
 
@@ -47,18 +72,20 @@
 .desktopNav {
   display: none;
   align-items: center;
-  gap: var(--space-8);
+  gap: var(--space-6);
+  white-space: nowrap;
 }
 
 .navList {
   display: flex;
   align-items: center;
-  gap: var(--space-6);
+  gap: var(--space-5);
 }
 
 .navLink {
   font-size: var(--text-sm);
   color: var(--color-ink-muted);
+  white-space: nowrap;
   transition: color var(--duration-fast) var(--ease-out);
 }
 
@@ -73,30 +100,100 @@
   justify-content: center;
   width: 44px;
   height: 44px;
-  margin-right: calc(var(--space-2) * -1);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   color: var(--color-ink);
 }
 
+/* Doua linii. La deschidere intai se strang la mijloc, apoi se rotesc in X;
+   la inchidere invers — de aici intarzierile diferite pe cele doua stari. */
 .menuIcon {
+  position: relative;
   display: block;
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.menuBar {
+  position: absolute;
+  inset-inline: 0.0625rem;
+  top: 50%;
+  height: 1.5px;
+  margin-top: -0.75px;
+  border-radius: var(--radius-full);
+  background-color: currentColor;
+  transition:
+    translate 260ms var(--ease-out) 220ms,
+    rotate 260ms var(--ease-out) 0ms;
+}
+
+.menuBar:first-child {
+  translate: 0 -0.25rem;
+}
+
+.menuBar:last-child {
+  translate: 0 0.25rem;
+}
+
+.menuIcon[data-open='true'] .menuBar {
+  translate: 0 0;
+  transition:
+    translate 260ms var(--ease-out) 0ms,
+    rotate 300ms var(--ease-out) 220ms;
+}
+
+.menuIcon[data-open='true'] .menuBar:first-child {
+  rotate: 45deg;
+}
+
+.menuIcon[data-open='true'] .menuBar:last-child {
+  rotate: -45deg;
 }
 
 /* --- Panou mobil --- */
+/* Meniul mobil e o cutie alba care porneste de sub capsula si o cuprinde:
+   capsula devine transparenta, iar bula cu X ramane in coltul cutiei. Cutia
+   urca cat capsula (56px: butonul de 44px plus padding-ul) si isi lasa loc
+   sus, in continut, ca sa intre si ea in animatia de inaltime. */
 .mobilePanel {
-  border-top: 1px solid transparent;
-  transition: border-color var(--duration-base) var(--ease-out);
+  position: relative;
+  z-index: 0;
+  margin-top: -3.5rem;
+  border-radius: var(--radius-xl);
+  background-color: color-mix(in srgb, var(--color-surface) 92%, transparent);
+  backdrop-filter: saturate(150%) blur(14px);
 }
 
-.mobilePanel[data-open='true'] {
-  border-top-color: var(--color-border);
+/* Deschiderea e lenta si lina, iar linkurile apar putin dupa cutie. La
+   inchidere linkurile se sting primele, apoi se strange cutia. */
+.header .mobilePanel {
+  transition: grid-template-rows 650ms var(--ease-in-out-soft) 80ms;
+}
+
+.header .mobilePanel[data-open='true'] {
+  transition: grid-template-rows 650ms var(--ease-in-out-soft);
+}
+
+.mobileList {
+  opacity: 0;
+  translate: 0 -0.5rem;
+  transition:
+    opacity 220ms var(--ease-out),
+    translate 220ms var(--ease-out);
+}
+
+.mobilePanel[data-open='true'] .mobileList {
+  opacity: 1;
+  translate: 0 0;
+  transition:
+    opacity 450ms var(--ease-out) 250ms,
+    translate 450ms var(--ease-out) 250ms;
 }
 
 .mobileList {
   display: flex;
   flex-direction: column;
   gap: var(--space-1);
-  padding-block: var(--space-4) var(--space-6);
+  padding: calc(3.5rem + var(--space-2)) var(--space-5) var(--space-5);
 }
 
 .mobileLink {
@@ -111,7 +208,117 @@
   margin-top: var(--space-3);
 }
 
-@media (min-width: 48rem) {
+/* --- Telefon si tableta ---
+   Capsula e mai subtire. Dupa hero se strange spre dreapta pana ramane doar
+   butonul de meniu: intai se stinge semnatura, apoi se ingusteaza capsula. La
+   intoarcere, invers. `max-width` se anima intre procent si lungime, iar
+   semnatura se poate micsora (`min-width: 0`), ca butonul sa ramana pe loc. */
+@media (max-width: 77.999rem) {
+  .inner {
+    gap: var(--space-4);
+    min-height: 0;
+    max-width: 100%;
+    margin-inline-start: auto;
+    overflow: hidden;
+    padding: 0.375rem 0.375rem 0.375rem 1.25rem;
+    transition:
+      background-color var(--duration-base) var(--ease-out),
+      max-width 520ms var(--ease-out) 0ms,
+      padding 520ms var(--ease-out) 0ms,
+      gap 520ms var(--ease-out) 0ms;
+  }
+
+  .brand {
+    flex: 0 1 auto;
+    min-width: 0;
+    white-space: nowrap;
+    transition:
+      opacity 260ms var(--ease-out) 220ms,
+      filter 260ms var(--ease-out) 220ms;
+  }
+
+  /* Butonul de meniu e mereu o bula cacao cu linii albe, si in bara intreaga,
+     si strans. Umbra apare doar cand ramane singur peste pagina, lin. */
+  .menuButton {
+    flex: none;
+    background-color: var(--color-panel);
+    color: #ffffff;
+    transition: box-shadow 700ms var(--ease-in-out-soft) 120ms;
+  }
+
+  .header[data-compact='true'] .menuButton {
+    box-shadow: 0 12px 28px -12px var(--color-panel-shadow);
+  }
+
+  /* Capsula sta deasupra cutiei meniului. */
+  .inner {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Cu meniul deschis capsula se topeste in cutia alba; ramane bula cu X. */
+  .header[data-menu-open='true'] .inner {
+    background-color: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+  }
+
+  .header[data-menu-open='true'] .menuButton {
+    box-shadow: none;
+  }
+
+  /* Strans, capsula dispare si ramane doar bula butonului: pe pagina crem
+     capsula translucida s-ar pierde printre texte. */
+  .header[data-compact='true'] .inner {
+    max-width: calc(44px + 0.75rem);
+    gap: 0;
+    padding: 0.375rem;
+    background-color: transparent;
+    backdrop-filter: none;
+    transition:
+      background-color 700ms var(--ease-in-out-soft) 120ms,
+      max-width 520ms var(--ease-out) 160ms,
+      padding 520ms var(--ease-out) 160ms,
+      gap 520ms var(--ease-out) 160ms;
+  }
+
+  .header[data-compact='true'] .brand {
+    opacity: 0;
+    filter: blur(4px);
+    pointer-events: none;
+    transition:
+      opacity 200ms var(--ease-out) 0ms,
+      filter 200ms var(--ease-out) 0ms;
+  }
+}
+
+@media (max-width: 77.999rem) and (prefers-reduced-motion: reduce) {
+  .inner,
+  .brand,
+  .menuBar,
+  .header .mobilePanel,
+  .header .mobilePanel[data-open='true'],
+  .mobileList,
+  .mobilePanel[data-open='true'] .mobileList,
+  .header[data-compact='true'] .inner,
+  .header[data-compact='true'] .brand,
+  .menuIcon[data-open='true'] .menuBar {
+    transition: none;
+  }
+}
+
+/* Capsula trece pe meniul complet abia cand incape intreg pe un rand; pana
+   atunci ramane butonul de meniu. Cu sase sectiuni in bara, pragul e mai sus
+   decat ar sugera tabletele. */
+@media (min-width: 78rem) {
+  /* Pe desktop capsula se stramteaza pe continutul ei si sta centrata. */
+  .inner {
+    width: fit-content;
+    max-width: 100%;
+    margin-inline: auto;
+    gap: var(--space-8);
+  }
+
   .desktopNav {
     display: flex;
   }

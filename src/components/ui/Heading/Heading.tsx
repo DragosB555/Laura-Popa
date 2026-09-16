@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { cx } from '@/lib/cx';
+import { TextReveal } from '@/components/ui/TextReveal';
 import styles from './Heading.module.css';
 
 export type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
@@ -23,6 +24,8 @@ type HeadingProps = {
   sans?: boolean;
   /** Echilibreaza randurile (`text-wrap: balance`). Implicit: activ. */
   balance?: boolean;
+  /** Apare cuvant cu cuvant la scroll (fade + blur). Necesita `children` string. */
+  reveal?: boolean;
   id?: string;
   className?: string;
 };
@@ -33,16 +36,23 @@ export function Heading({
   size = 'lg',
   sans = false,
   balance = true,
+  reveal = false,
   id,
   className,
 }: HeadingProps) {
   const Tag = `h${level}` as const;
+  const classes = cx(styles.heading, sizeClass[size], sans && styles.sans, balance && 'u-balance', className);
+
+  if (reveal && typeof children === 'string') {
+    return (
+      <TextReveal as={Tag} id={id} className={classes}>
+        {children}
+      </TextReveal>
+    );
+  }
 
   return (
-    <Tag
-      id={id}
-      className={cx(styles.heading, sizeClass[size], sans && styles.sans, balance && 'u-balance', className)}
-    >
+    <Tag id={id} className={classes}>
       {children}
     </Tag>
   );

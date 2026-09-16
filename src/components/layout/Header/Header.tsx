@@ -2,17 +2,23 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Button, Collapse, Container } from '@/components/ui';
+import { Button, Collapse, Container, Logo } from '@/components/ui';
 import { anchors, nav, site } from '@/content/site';
 import styles from './Header.module.css';
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
+  /* Dupa hero, pe telefon si tableta, bara se strange doar pe butonul de meniu. */
+  const [isCompact, setIsCompact] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
+    const hero = document.getElementById(anchors.hero)?.closest('section');
+
     function onScroll() {
       setIsScrolled(window.scrollY > 8);
+      /* Hero-ul a iesit pe jumatate din ecran. */
+      setIsCompact(hero ? hero.getBoundingClientRect().bottom < window.innerHeight / 2 : false);
     }
 
     onScroll();
@@ -21,11 +27,18 @@ export function Header() {
   }, []);
 
   return (
-    <header className={styles.header} data-scrolled={isScrolled}>
+    <header className={styles.header} data-scrolled={isScrolled} data-compact={isCompact}
+      data-menu-open={isMenuOpen}
+    >
       <Container size="xl">
         <div className={styles.inner}>
-          <Link href={`#${anchors.hero}`} className={styles.brand}>
-            <span className={styles.brandName}>{site.name}</span>
+          <Link
+            href={`#${anchors.hero}`}
+            className={styles.brand}
+            aria-hidden={isCompact || undefined}
+            tabIndex={isCompact ? -1 : undefined}
+          >
+            <Logo className={styles.brandName} />
             <span className={styles.brandRole}>{site.role}</span>
           </Link>
 
@@ -52,23 +65,11 @@ export function Header() {
             onClick={() => setIsMenuOpen((open) => !open)}
           >
             <span className="u-visually-hidden">{isMenuOpen ? 'Închide meniul' : 'Deschide meniul'}</span>
-            <svg
-              className={styles.menuIcon}
-              width="22"
-              height="22"
-              viewBox="0 0 22 22"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              aria-hidden="true"
-            >
-              {isMenuOpen ? (
-                <path d="M5 5l12 12M17 5L5 17" />
-              ) : (
-                <path d="M3 7h16M3 15h16" />
-              )}
-            </svg>
+            {/* Doua linii care se strang la mijloc si se rotesc in X. */}
+            <span className={styles.menuIcon} data-open={isMenuOpen} aria-hidden="true">
+              <span className={styles.menuBar} />
+              <span className={styles.menuBar} />
+            </span>
           </button>
         </div>
 
@@ -83,8 +84,8 @@ export function Header() {
                 </li>
               ))}
               <li className={styles.mobileCta}>
-                <Button href={nav.cta.href} fullWidth onClick={() => setIsMenuOpen(false)}>
-                  {nav.cta.label}
+                <Button href={nav.cta.href} onClick={() => setIsMenuOpen(false)}>
+                  {nav.cta.shortLabel}
                 </Button>
               </li>
             </ul>

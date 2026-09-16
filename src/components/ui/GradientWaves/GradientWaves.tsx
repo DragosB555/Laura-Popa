@@ -193,8 +193,8 @@ type WebglContext = {
 };
 
 export function GradientWaves({
-  horizonColor = '#5227FF',
-  waveColor = '#FF9FFC',
+  horizonColor = '#f4ece5',
+  waveColor = '#8a5f46',
   crestColor = '#FFFFFF',
   speed = 0.4,
   amplitude = 2.5,

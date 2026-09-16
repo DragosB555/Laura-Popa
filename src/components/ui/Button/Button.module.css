@@ -45,177 +45,102 @@
 }
 
 /* =========================================================================
-   VARIANTA PRIMARY — suprafata „lava"
-   Cercuri care orbiteaza sunt neclarizate, apoi filtrul SVG #btn-goo
-   intareste canalul alfa, ceea ce le lipeste in forme cu margine dura
-   (efect metaball). Filtrul este definit o singura data, in layout.
+   VARIANTA PRIMARY
+   Capsula inchisa la culoare contine o bula cacao cu eticheta si, in dreapta,
+   un slot cu pictograma. La hover bula se intinde peste slot, eticheta ramane
+   pe loc, iar pictograma e schimbata cu o sageata pe diagonala.
    ========================================================================= */
 .primary {
-  /* dreptunghi cu colturi rotunjite, nu capsula */
-  border-radius: var(--radius-md);
-  color: var(--plasma-ink);
-  background: none;
-  box-shadow:
-    0 0 25px 0 var(--plasma-3),
-    0 18px 45px -12px var(--plasma-4);
-  animation: plasma-colorize calc(var(--plasma-speed) * 3) ease-in-out infinite;
-}
+  --btn-pad: 0.4rem;
+  --btn-trail: 3.1rem;
+  --btn-shell: var(--color-panel);
 
-.plasma {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
+  gap: 0;
+  padding: var(--btn-pad);
+  border: none;
+  border-radius: var(--radius-full);
   overflow: hidden;
-  border-radius: inherit;
-  pointer-events: none;
-  background-color: color-mix(in srgb, var(--plasma-1) 42%, #ffffff);
-  background-image: linear-gradient(180deg, var(--plasma-5), var(--plasma-4));
-  box-shadow:
-    inset 0 1px 0 0 var(--plasma-1),
-    inset 0 -1px 0 0 var(--plasma-2),
-    inset 0 10px 10px 0 var(--plasma-3),
-    inset 0 -10px 10px 0 var(--plasma-4);
+  background-color: var(--btn-shell);
+  color: #ffffff;
+  font-size: var(--text-base);
 }
 
-/* Intarirea canalului alfa lipeste formele intre ele;
-   blur-ul mic de dupa inmoaie muchia rezultata, ca sa nu para taiata. */
-.goo {
+/* Bula cacao, cu o lumina alba turtita care urca de dedesubt. */
+.surface {
   position: absolute;
-  inset: -25% -6%;
-  filter: url('#btn-goo') blur(0.035em);
+  z-index: 0;
+  top: var(--btn-pad);
+  bottom: var(--btn-pad);
+  left: var(--btn-pad);
+  right: calc(var(--btn-pad) + var(--btn-trail));
+  border-radius: var(--radius-full);
+  background-color: var(--color-accent);
+  /* Elipsa e mai inalta decat lata: la 130% latime arcul iesea aproape drept
+     pe latimea butonului si citea ca o banda orizontala. */
+  background-image: radial-gradient(
+    ellipse 68% 125% at 50% 114%,
+    rgba(255, 255, 255, 0.32) 0%,
+    rgba(255, 255, 255, 0.09) 46%,
+    transparent 72%
+  );
+  transition: right 250ms ease;
 }
 
-/* Gradientul chihlimbar -> portocaliu, o singura data peste tot,
-   asa cum in original masca era aplicata peste un singur strat colorat. */
-.plasma::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgb(255 191 72 / 0) 18%, var(--plasma-2) 96%);
-  opacity: 0.9;
-  pointer-events: none;
+.primary:hover .surface,
+.primary:focus-visible .surface {
+  right: var(--btn-pad);
 }
 
-/* Neclaritatea care „respira" — cat de topite sunt formele intre ele */
-.gooBlur {
-  position: absolute;
-  inset: 0;
-  filter: blur(0.42em);
-  animation: plasma-roundness calc(var(--plasma-speed) / 2) ease-in-out infinite;
+.primary .label {
+  padding: 0.85em 1.7em;
 }
 
-/* Culoare plina, nu gradient: altfel fiecare forma si-ar avea propriul
-   gradient si s-ar vedea cusaturi acolo unde se suprapun. */
-.blob {
-  position: absolute;
-  height: 52%;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: var(--plasma-1);
-  animation: plasma-orbit var(--plasma-speed) linear infinite;
+/* Slotul din dreapta. Cele doua pictograme stau in aceeasi celula. */
+.trailing {
+  position: relative;
+  z-index: 1;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: var(--btn-trail);
+  align-self: stretch;
 }
 
-.blob:nth-child(1) {
-  left: -3%;
-  top: 24%;
-  transform-origin: 150% 50%;
-  animation-direction: reverse;
+.trailing > * {
+  grid-area: 1 / 1;
+  display: grid;
+  place-items: center;
+  transition:
+    opacity 250ms ease,
+    transform 250ms ease;
 }
 
-.blob:nth-child(2) {
-  left: 11%;
-  top: 18%;
-  height: 62%;
-  transform-origin: 50% 140%;
-  animation-delay: calc(var(--plasma-speed) / -5);
+.trailing svg {
+  width: 1.15em;
+  height: 1.15em;
+  stroke-width: 1.75;
 }
 
-.blob:nth-child(3) {
-  left: 24%;
-  top: 26%;
-  height: 50%;
-  transform-origin: -40% 50%;
-  animation-direction: reverse;
-  animation-delay: calc(var(--plasma-speed) / -2.2);
+.iconHover {
+  opacity: 0;
+  transform: translate(-0.3em, 0.3em);
 }
 
-.blob:nth-child(4) {
-  left: 37%;
-  top: 16%;
-  height: 66%;
-  transform-origin: 50% -30%;
-  animation-delay: calc(var(--plasma-speed) / -1.4);
+.primary:hover .iconRest,
+.primary:focus-visible .iconRest {
+  opacity: 0;
 }
 
-.blob:nth-child(5) {
-  left: 50%;
-  top: 25%;
-  transform-origin: 140% 50%;
-  animation-direction: reverse;
-  animation-delay: calc(var(--plasma-speed) / -3);
+.primary:hover .iconHover,
+.primary:focus-visible .iconHover {
+  opacity: 1;
+  transform: none;
 }
 
-.blob:nth-child(6) {
-  left: 63%;
-  top: 19%;
-  height: 60%;
-  transform-origin: 50% 150%;
-  animation-delay: calc(var(--plasma-speed) / -1.7);
-}
-
-.blob:nth-child(7) {
-  left: 76%;
-  top: 26%;
-  height: 50%;
-  transform-origin: -50% 50%;
-  animation-direction: reverse;
-  animation-delay: calc(var(--plasma-speed) / -2.6);
-}
-
-.blob:nth-child(8) {
-  right: -3%;
-  top: 21%;
-  height: 58%;
-  transform-origin: 50% 130%;
-  animation-delay: calc(var(--plasma-speed) / -1.2);
-}
-
-@keyframes plasma-orbit {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes plasma-roundness {
-  0%,
-  100% {
-    filter: blur(0.42em);
-  }
-  30%,
-  60% {
-    filter: blur(0.26em);
-  }
-}
-
-@keyframes plasma-colorize {
-  0%,
-  100% {
-    filter: hue-rotate(0deg);
-  }
-  20% {
-    filter: hue-rotate(-30deg);
-  }
-  40% {
-    filter: hue-rotate(-60deg);
-  }
-  60% {
-    filter: hue-rotate(-90deg);
-  }
-  80% {
-    filter: hue-rotate(-45deg);
+@media (prefers-reduced-motion: reduce) {
+  .surface,
+  .trailing > * {
+    transition: none;
   }
 }
 
@@ -268,6 +193,22 @@
 .sizeLg {
   padding: var(--space-4) var(--space-8);
   font-size: var(--text-base);
+}
+
+/* La primary paddingul sta pe eticheta, nu pe capsula. */
+.primary.sizeSm,
+.primary.sizeLg {
+  padding: var(--btn-pad);
+}
+
+.primary.sizeSm {
+  --btn-trail: 2.5rem;
+  font-size: var(--text-sm);
+}
+
+.primary.sizeLg {
+  --btn-trail: 3.6rem;
+  font-size: var(--text-md);
 }
 
 .link.sizeSm,

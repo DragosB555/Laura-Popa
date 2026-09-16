@@ -1,57 +1,104 @@
-.statement {
-  margin-top: var(--space-6);
-  max-width: var(--measure);
-  font-size: var(--text-md);
-  line-height: var(--leading-relaxed);
-  color: var(--color-ink-muted);
+.section {
+  position: relative;
+  /* `clip`, nu `hidden`: `hidden` face din sectiune un container de scroll, iar
+     atunci parallaxul titlului (`animation-timeline: view()`) nu mai porneste. */
+  overflow: clip;
 }
 
-.details {
+/* Acelasi panou inchis ca in restul paginii: ciocolata, granulatie, bolta de
+   lumina care urca de jos, lumina pe muchia interioara. */
+.panel {
+  position: relative;
+  z-index: 1;
+  padding: clamp(var(--space-10), 5vw, var(--space-20)) clamp(var(--space-8), 4vw, var(--space-16));
+  border-radius: 7.5rem;
+  background-color: var(--color-panel);
+  background-image:
+    var(--grain),
+    var(--panel-sheen);
+  box-shadow:
+    var(--panel-inner-glow),
+    0 32px 64px -28px var(--color-panel-shadow);
+}
+
+.specs {
   display: grid;
-  gap: var(--space-4);
-  margin-top: var(--space-12);
+  gap: clamp(var(--space-6), 2.5vw, var(--space-10));
 }
 
-.detail {
+.spec {
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
+  gap: var(--space-2);
 }
 
-.detailLabel {
+/* Durata iese in fata, intr-o cutie deschisa translucida. */
+.specBoxed {
+  padding: clamp(var(--space-6), 3vw, var(--space-10));
+  border-radius: 3rem;
+  background-color: rgba(255, 255, 255, 0.08);
+  transition:
+    background-color var(--duration-base) var(--ease-out),
+    box-shadow var(--duration-base) var(--ease-out);
+}
+/* Acelasi raspuns la hover ca la fisele de contact: suprafata creste cu trei
+   procente si se aprinde o lumina interioara. Fisele nu duc nicaieri — reactia
+   e doar un semn ca pagina e vie sub cursor. */
+.specBoxed:hover {
+  background-color: rgba(255, 255, 255, 0.11);
+  box-shadow: inset 0 0 2rem rgba(255, 255, 255, 0.1);
+}
+
+.label {
   font-size: var(--text-2xs);
   font-weight: var(--weight-medium);
   letter-spacing: var(--tracking-widest);
   text-transform: uppercase;
-  color: var(--color-ink-soft);
+  color: color-mix(in srgb, var(--color-accent) 30%, #ffffff);
 }
 
-.detailValue {
+.value {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25em;
+  font-family: var(--font-serif);
+  font-size: var(--text-3xl);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: #ffffff;
+}
+
+/* Unitatea — „min”, „RON” — mica si discreta langa cifra. */
+.unit {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-wide);
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Formatul e o fraza, nu o cifra: mai mica decat `.value` si mai lizibila. */
+.text {
   font-family: var(--font-serif);
   font-size: var(--text-xl);
+  font-weight: var(--weight-medium);
   line-height: var(--leading-snug);
   letter-spacing: var(--tracking-tight);
-  color: var(--color-ink);
+  color: rgba(255, 255, 255, 0.92);
+  text-wrap: pretty;
 }
 
-.detailNote {
+.note {
   font-size: var(--text-sm);
-  color: var(--color-ink-muted);
-}
-
-.description {
-  margin-top: var(--space-12);
-  padding-top: var(--space-8);
-  border-top: 1px solid var(--color-border);
-  max-width: var(--measure);
-  font-size: var(--text-base);
   line-height: var(--leading-relaxed);
-  color: var(--color-ink-muted);
+  color: rgba(255, 255, 255, 0.6);
 }
 
-@media (min-width: 40rem) {
-  .details {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--space-6);
+@media (min-width: 48rem) {
+  .specs {
+    /* Textul ia mai mult loc; durata ramane o cutie compacta langa el. */
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    align-items: start;
   }
 }

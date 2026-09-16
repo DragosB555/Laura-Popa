@@ -1,0 +1,13 @@
+.hint {
+  width: 2rem;
+  height: 3rem;
+}
+
+/* Lottie scrie culorile ca atribute; CSS-ul le suprascrie cu `currentColor`. */
+.hint :global(.outline) path {
+  stroke: currentColor;
+}
+
+.hint :global(.dot) path {
+  fill: currentColor;
+}

@@ -1,8 +1,8 @@
 import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from 'react';
 import Link from 'next/link';
+import { ArrowUpRight, CalendarDays } from 'lucide-react';
 import { cx } from '@/lib/cx';
 import { ArrowIcon } from '@/components/ui/ArrowIcon';
-import { Plasma } from './Plasma';
 import styles from './Button.module.css';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'link';
@@ -27,8 +27,10 @@ type CommonProps = {
   variant?: ButtonVariant;
   /** Dimensiunea butonului. Implicit: `md`. */
   size?: ButtonSize;
-  /** Adauga sageata `→` la final. */
+  /** Adauga sageata `→` la final. Ignorat de varianta `primary`. */
   withArrow?: boolean;
+  /** Pictograma din dreapta, la varianta `primary`. Implicit: calendar. */
+  icon?: ReactNode;
   /** Ajusteaza culorile pentru fundal inchis (nu afecteaza varianta `primary`). */
   onInverse?: boolean;
   /** Ocupa toata latimea disponibila (util pe mobil). */
@@ -53,6 +55,7 @@ export function Button({
   variant = 'primary',
   size = 'md',
   withArrow = false,
+  icon,
   onInverse = false,
   fullWidth = false,
   className,
@@ -67,15 +70,25 @@ export function Button({
     className,
   );
 
-  const content = (
-    <>
-      {variant === 'primary' ? <Plasma /> : null}
+  const content =
+    variant === 'primary' ? (
+      <>
+        {/* Bula cacao. La hover se intinde peste slotul din dreapta. */}
+        <span aria-hidden="true" className={styles.surface} />
+
+        <span className={styles.label}>{children}</span>
+
+        <span aria-hidden="true" className={styles.trailing}>
+          <span className={styles.iconRest}>{icon ?? <CalendarDays />}</span>
+          <ArrowUpRight className={styles.iconHover} />
+        </span>
+      </>
+    ) : (
       <span className={styles.label}>
         {children}
         {withArrow ? <ArrowIcon className={styles.icon} /> : null}
       </span>
-    </>
-  );
+    );
 
   if ('href' in rest && typeof rest.href === 'string') {
     const { href, ...anchorProps } = rest;

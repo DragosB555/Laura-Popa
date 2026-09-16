@@ -1,0 +1,15 @@
+.section {
+  text-align: center;
+}
+
+.text {
+  max-width: var(--measure-narrow);
+  margin-inline: auto;
+  font-family: var(--font-serif);
+  font-size: var(--text-3xl);
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: var(--tracking-tight);
+  text-wrap: balance;
+  color: var(--color-ink);
+}

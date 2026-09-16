@@ -1,22 +1,237 @@
-.inner {
+/* Stratul inchis acopera tot ecranul: colturile rotunjite ale paginii scobesc
+   deasupra marginii ei de jos, si prin scobitura trebuie sa se vada tot el. */
+.dock {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: clip;
+  background-color: var(--color-panel);
+}
+
+/* Cutia panzei. Sta doar in banda de jos — restul stratului inchis ramane
+   mereu acoperit de pagina, deci acolo desenul s-ar pierde degeaba. Panza e
+   inauntru, nu chiar acest element: componenta isi pune singura dimensiunile
+   pe canvas, si ar suprascrie inaltimea de aici. */
+.veil {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: var(--contact-height);
+  z-index: 0;
+}
+
+/* Granulatia sta peste panza, ca suprafata sa aiba aceeasi textura ca
+   panourile din pagina. */
+.grain {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: var(--grain);
+  pointer-events: none;
+}
+
+/* Continutul sta doar in banda care se dezvaluie efectiv, jos. */
+.band {
+  position: absolute;
+  z-index: 1;
+  inset: auto 0 0 0;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: var(--space-8);
-  text-align: center;
+  height: var(--contact-height);
 }
 
-.lines {
+/* Titlul centrat, peste cuvantul mare din spate. Pe suprafata inchisa,
+   fundalul decorativ trebuie sa fie alb, nu cacao. */
+.heading {
+  --backdrop-color: #ffffff;
+  --backdrop-opacity: 0.09;
+
+  color: #ffffff;
+}
+
+/* Parallaxul cuvantului mare, alta sursa decat in restul paginii: sectiunea e
+   fixata, deci nu trece niciodata prin ecran si `view()` nu porneste. Aici il
+   leaga de scrollul paginii, exact pe intervalul in care contactul se
+   dezvaluie. Valorile din keyframes sunt literale: custom properties nu se
+   interpoleaza in keyframes. */
+@keyframes contact-drift {
+  from {
+    transform: translateY(calc(-50% + 1rem));
+  }
+  to {
+    transform: translateY(calc(-50% - 1rem));
+  }
+}
+
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    /* Randul mare din spate — singurul `p` pe care il randeaza titlul. */
+    .heading p {
+      animation-name: contact-drift;
+      animation-duration: auto;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: scroll(root block);
+      animation-range-start: calc(100% - var(--contact-height));
+      animation-range-end: 100%;
+    }
+  }
+}
+
+/* --- Cele trei fise --- */
+.cards {
+  display: grid;
+  gap: var(--space-3);
+  grid-auto-rows: 1fr;
+}
+
+.card {
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
-  font-family: var(--font-serif);
-  font-size: var(--text-3xl);
-  line-height: var(--leading-tight);
-  letter-spacing: var(--tracking-tight);
-  max-width: 20ch;
+  gap: var(--space-3);
+  /* Padding mai strans decat la fisele din pagina: aici sunt patru pe un rand,
+     iar valorile (numar, email) nu au voie sa se rupa pe doua randuri. */
+  padding: clamp(var(--space-6), 2vw, var(--space-8));
+  border-radius: 4.5rem;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.06);
+  transition:
+    background-color var(--duration-base) var(--ease-out),
+    box-shadow var(--duration-base) var(--ease-out),
+    filter var(--duration-base) var(--ease-out);
 }
 
-.lines span:last-child {
-  color: var(--color-accent-strong);
+/* Fisa se lumineaza cu 3% cand e vizata oriunde pe suprafata ei — linkul intins
+   peste tot o face sa primeasca hover-ul si din colturi. */
+.card:has(a.value:hover) {
+  background-color: rgba(255, 255, 255, 0.09);
+  /* Lumina se strange pe muchia dinauntru, ca la panouri — raza mare de blur o
+     topeste in suprafata, deci nu citeste ca un contur. */
+  box-shadow: inset 0 0 2rem rgba(255, 255, 255, 0.1);
+}
+
+/* Prima fisa are gradient opac, deci culoarea de fundal nu s-ar vedea: acolo
+   aceeasi crestere se face pe luminozitate. */
+.card:first-child:has(a.value:hover) {
+  filter: brightness(1.03);
+  /* Aici lumina interioara exista deja; la hover se aprinde putin, iar umbra
+     de dedesubt ramane cea din starea normala. */
+  box-shadow:
+    inset 0 0 1.75rem rgba(255, 255, 255, 0.3),
+    0 20px 40px -20px var(--color-panel-shadow);
+}
+
+/* Doar prima fisa e in cacao, ca cea activa din „Cum decurge o intalnire”:
+   gradient de sus in jos, lumina pe muchia interioara si umbra dedesubt. */
+.card:first-child {
+  background-color: transparent;
+  background-image:
+    var(--grain),
+    linear-gradient(
+      165deg,
+      color-mix(in srgb, var(--color-accent) 88%, #ffffff) 0%,
+      var(--color-accent) 42%,
+      var(--color-accent-strong) 100%
+    );
+  box-shadow:
+    var(--panel-inner-glow),
+    0 20px 40px -20px var(--color-panel-shadow);
+}
+
+.icon {
+  flex: none;
+  width: 1.75rem;
+  height: 1.75rem;
+  color: #ffffff;
+  stroke-width: 1.5;
+}
+
+.label {
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.value {
+  font-family: var(--font-serif);
+  font-size: var(--text-base);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-tight);
+  /* Datele de contact se citesc dintr-o bucata; daca nu incap, se micsoreaza
+     fisa, nu se taie numarul. */
+  white-space: nowrap;
+  color: #ffffff;
+}
+
+/* Toata fisa e zona de click, nu doar textul: linkul se intinde peste ea.
+   Fisa cu locatia nu are link, deci ramane inerta. */
+.line {
+  display: block;
+}
+
+a.value::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+
+/* --- Telefon ---
+   Contactul umple tot ecranul, deci continutul sta sub bara de sus. Fisele
+   devin randuri compacte: pictograma in stanga, eticheta si valoarea langa
+   ea. Asa incap toate patru fara sa se taie. */
+@media (max-width: 47.999rem) {
+  .band {
+    padding-block: calc(var(--header-height) - var(--space-4)) var(--space-6);
+  }
+
+  .heading {
+    margin-block-end: var(--space-8);
+  }
+
+  .cards {
+    gap: var(--space-2);
+    grid-auto-rows: auto;
+  }
+
+  .card {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto;
+    column-gap: var(--space-4);
+    row-gap: 0.15rem;
+    align-items: center;
+    justify-content: stretch;
+    padding: var(--space-4) var(--space-5);
+    border-radius: 1.75rem;
+  }
+
+  .icon {
+    grid-row: 1 / span 2;
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .label {
+    align-self: end;
+  }
+
+  .value {
+    align-self: start;
+  }
+}
+
+@media (min-width: 48rem) {
+  .cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 64rem) {
+  .cards {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
 }

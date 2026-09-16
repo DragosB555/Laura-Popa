@@ -1,44 +1,59 @@
-import { Button, Container, MediaPlaceholder, Reveal } from '@/components/ui';
+'use client';
+
+import { useRef } from 'react';
+import { UserRound } from 'lucide-react';
+import { Button, Container, ScrollHint, SkyClouds } from '@/components/ui';
 import { anchors, hero } from '@/content/site';
-import { HeroWaves } from './HeroWaves';
 import styles from './Hero.module.css';
 
-/** 01 — HERO */
+/* =========================================================================
+   01 — HERO
+
+   Trei fraze, pe un cer care incepe intunecat si se insenineaza pe masura
+   ce derulezi. Frazele se aduna una sub alta, pe masura ce se lumineaza; odata cu
+   ultima vin si un rand de text si butonul spre „Despre mine”.
+   Sectiunea e mai inalta decat ecranul; scena sta lipita sus cat derulezi
+   prin surplus.
+
+   Ancora hero-ului e la capatul derularii, nu la inceputul sectiunii: din
+   meniu ajungi direct pe cerul senin.
+   ========================================================================= */
+
 export function Hero() {
+  const trackRef = useRef<HTMLElement>(null);
+
   return (
-    <section id={anchors.hero} className={styles.hero}>
-      <HeroWaves />
+    <section ref={trackRef} className={styles.hero}>
+      <span id={anchors.hero} className={styles.anchor} aria-hidden="true" />
 
-      <Container size="xl">
-        <div className={styles.grid}>
-          <Reveal className={styles.content}>
-            <h1 className={`${styles.intro} u-balance`}>{hero.intro}</h1>
+      <div className={styles.stage}>
+        <div className={`${styles.frame} u-squircle`}>
+          <SkyClouds trackRef={trackRef} className={styles.sky} />
 
-            <div className={styles.lines}>
-              {hero.lines.map((line) => (
-                <p key={line}>{line}</p>
-              ))}
+          <Container size="xl">
+            <div className={styles.head}>
+              {/* Frazele apar una sub alta, dupa cer, si raman. Cititoarele de
+                  ecran le citesc pe rand. */}
+              <h1 className={styles.lines}>
+                {hero.lines.map((text, index) => (
+                  <span key={text} className={styles.line} data-step={index}>
+                    {text}
+                  </span>
+                ))}
+              </h1>
+
+              <div className={styles.outro}>
+                <p className={styles.body}>{hero.body}</p>
+                <Button href={hero.cta.href} icon={<UserRound />}>
+                  {hero.cta.label}
+                </Button>
+              </div>
             </div>
+          </Container>
 
-            <p className={styles.closing}>{hero.closing}</p>
-
-            <Button href={hero.cta.href} size="lg" withArrow>
-              {hero.cta.label}
-            </Button>
-          </Reveal>
-
-          <Reveal delay={120} className={styles.media}>
-            <MediaPlaceholder
-              ratio="4/5"
-              label={hero.image.label}
-              src={hero.image.src}
-              alt={hero.image.alt}
-              priority
-              sizes="(max-width: 60rem) 100vw, 45vw"
-            />
-          </Reveal>
+          <ScrollHint className={styles.scrollHint} />
         </div>
-      </Container>
+      </div>
     </section>
   );
 }

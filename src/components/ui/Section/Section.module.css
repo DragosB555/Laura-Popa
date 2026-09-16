@@ -12,8 +12,10 @@
 }
 
 /* --- Ton cromatic --- */
+/* Transparent: fundalul crem il pune pagina (`.u-page`). Daca sectiunile ar
+   avea propriul fundal, s-ar picta patrat peste colturile ei rotunjite. */
 .toneDefault {
-  background-color: var(--color-bg);
+  background-color: transparent;
 }
 
 .toneAlt {

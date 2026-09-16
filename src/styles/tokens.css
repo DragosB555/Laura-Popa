@@ -19,33 +19,63 @@
   --color-ink-inverse: #f7f5f2;
   --color-ink-inverse-muted: #b8b2a8;
 
-  --color-accent: #6b7f6e;
-  --color-accent-strong: #566959;
-  --color-accent-soft: #e6ebe5;
+  /* Cacao adanc — tot ce e interactiv sau scris mic: butoane, etichete,
+     linkuri. Are 7.9:1 pe crem, deci trece AA si la text mic. */
+  --color-accent: #6f4a35;
+  --color-accent-strong: #57392a;
+  --color-accent-soft: #f1e5db;
   --color-accent-ink: #ffffff;
+  /* Mocha Mousse (Pantone 17-1230), tonul cald al paletei. Doar decorativ —
+     gradienti, valuri, lumini: pe crem are 3.9:1, prea putin pentru text. */
+  --color-mocha: #a47864;
+  --color-mocha-soft: #dcc6b6;
+
+  /* Suprafata inchisa a panourilor. Ciocolata adanca, nu negru: pastreaza
+     contrastul, dar cutiile raman in familia brandului. */
+  --color-panel: #2e1f16;
+  --color-panel-shadow: rgba(46, 31, 22, 0.5);
+  /* Lumina care se strange pe muchia interioara a panourilor. Nu e contur:
+     raza mare de blur o topeste in suprafata. */
+  --panel-inner-glow: inset 0 0 1.5rem rgba(255, 255, 255, 0.2);
+  /* Lumina calda care urca din marginea de jos a panourilor — o singura
+     definitie pentru toate, ca sa arate la fel peste tot.
+     Elipsa nu trebuie sa fie mult mai lata decat inalta: peste ~3:1 arcul iese
+     aproape drept pe latimea panoului si citeste ca o banda, nu ca o bolta.
+     Opacitatea e mica si suprafata e mai mare decat panoul, ca lumina sa para
+     difuza, nu o pata cu contur. */
+  --panel-glow: color-mix(in srgb, var(--color-mocha) 44%, transparent);
+  /* Stingerea are cinci trepte, nu una: un singur salt spre `transparent` lasa
+     o margine vizibila, oricat de mare ar fi elipsa. Trecerile intermediare
+     se fac prin `color-mix` pe aceeasi culoare, ca sa nu vireze spre gri. */
+  --panel-sheen: radial-gradient(
+    120% 132% at 50% 120%,
+    var(--panel-glow) 0%,
+    color-mix(in srgb, var(--panel-glow) 58%, transparent) 38%,
+    color-mix(in srgb, var(--panel-glow) 22%, transparent) 62%,
+    color-mix(in srgb, var(--panel-glow) 6%, transparent) 80%,
+    transparent 96%
+  );
+  /* Granulatie fina, ca strat de fundal. Opacitatea e coapta in SVG. */
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.16'/%3E%3C/svg%3E");
 
   --color-border: #e5e0d8;
   --color-border-strong: #d2ccc1;
   --color-border-inverse: #3a3733;
 
-  --color-focus: #6b7f6e;
-
-  /* Buton primary — efect „lava" (metaball).
-     Paleta chihlimbar/portocaliu, independenta de restul site-ului. */
-  --plasma-1: #ffbf48;
-  --plasma-2: #be4a1d;
-  --plasma-3: #ffbf4780;
-  --plasma-4: #bf4a1d80;
-  --plasma-5: #ffbf4740;
-  --plasma-ink: #2a1206;
-  --plasma-speed: 4.5s;
+  --color-focus: #6f4a35;
 
   /* ---------------------------------------------------------------------
      2. TIPOGRAFIE
      --------------------------------------------------------------------- */
-  --font-sans: var(--font-sans-loaded), ui-sans-serif, system-ui, -apple-system,
+  --font-sans: var(--font-serif-loaded), ui-sans-serif, system-ui, -apple-system,
     'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  --font-serif: var(--font-serif-loaded), ui-serif, Georgia, 'Times New Roman', serif;
+  /* Semnatura din bara de sus. Autography e instalat local; pana cand punem
+     fisierul fontului in proiect (`next/font/local`), vizitatorii care nu il au
+     instalat vad rezerva de mai jos. */
+  --font-brand: 'Autography', var(--font-serif);
+  /* Slotul de titluri. Numele e istoric — fontul incarcat poate fi si sans. */
+  --font-serif: var(--font-serif-loaded), ui-sans-serif, system-ui, -apple-system,
+    'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 
   /* Scala fluida: min pe mobil -> max pe desktop, fara media queries */
   --text-2xs: 0.75rem;
@@ -95,10 +125,11 @@
   --space-24: 6rem;
   --space-32: 8rem;
 
-  /* Spatiere verticala a sectiunilor — fluida */
-  --section-y-sm: clamp(3rem, 6vw, 4.5rem);
-  --section-y: clamp(4.5rem, 9vw, 7.5rem);
-  --section-y-lg: clamp(6rem, 12vw, 10rem);
+  /* Spatiere verticala a sectiunilor — fluida. Intre doua sectiuni se aduna
+     ambele paddinguri, deci distanta reala e dublul valorii de aici. */
+  --section-y-sm: clamp(4rem, 8vw, 6rem);
+  --section-y: clamp(6.5rem, 13vw, 10.5rem);
+  --section-y-lg: clamp(8rem, 16vw, 13rem);
 
   /* ---------------------------------------------------------------------
      4. LAYOUT
@@ -109,7 +140,18 @@
   --container-xl: 78rem;
   --container-gutter: clamp(1.25rem, 5vw, 2.5rem);
 
-  --header-height: 4.5rem;
+  /* Capsula plutitoare: inaltimea ei, distanta pana la marginea de sus si
+     totalul ocupat de bara — folosit pentru ancore si pozitii sticky. */
+  --nav-height: 3.5rem;
+  --nav-gap: 0.75rem;
+  /* Marginea de pagina din jurul cutiei din hero, egala pe toate laturile.
+     Bara pluteste in interiorul cutiei, deci coboara cu atat. */
+  --hero-inset: clamp(0.5rem, 1vw, 1.25rem);
+  /* Inaltimea reala a barei: capsula (continut + padding) plus banda din jur.
+     O folosesc doar ca sa nu ajunga ancorele si elementele sticky sub ea. */
+  --header-height: calc(7rem + var(--hero-inset) + var(--space-4));
+  /* Cat se dezvaluie din contact cand pagina urca peste el. */
+  --contact-height: clamp(20rem, 100svh, 40rem);
 
   /* ---------------------------------------------------------------------
      5. FORME SI UMBRE
@@ -128,9 +170,14 @@
      6. MISCARE
      --------------------------------------------------------------------- */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  /* Porneste si se opreste lin: pentru schimbari de culoare care nu trebuie sa sara. */
+  --ease-in-out-soft: cubic-bezier(0.65, 0, 0.35, 1);
   --duration-fast: 140ms;
   --duration-base: 240ms;
   --duration-slow: 600ms;
+  /* Aparitia la scroll: lenta intentionat, ca sectiunile sa se deschida, nu sa
+     clipeasca. */
+  --duration-reveal: 1100ms;
 
   /* ---------------------------------------------------------------------
      7. STRATURI (z-index)

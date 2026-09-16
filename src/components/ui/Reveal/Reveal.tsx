@@ -5,7 +5,8 @@ import { cx } from '@/lib/cx';
 import { useReveal } from '@/lib/useReveal';
 
 type RevealProps = {
-  children: ReactNode;
+  /** Optional: cutia poate fi si doar decor, fara continut. */
+  children?: ReactNode;
   /** Intarziere in milisecunde, pentru efect de cascada. */
   delay?: number;
   /** Elementul HTML randat. Implicit: `div`. */

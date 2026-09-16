@@ -1,29 +1,18 @@
-import { Eyebrow, MediaPlaceholder, Reveal, Section } from '@/components/ui';
+import { BackdropHeading, Reveal, Section } from '@/components/ui';
 import { about, anchors } from '@/content/site';
 import styles from './About.module.css';
 
-/** 06 — „Cine este omul de partea cealaltă?” */
+/** 05 — „Despre mine” */
 export function About() {
   return (
     <Section id={anchors.about} containerSize="xl">
+      <BackdropHeading backdrop={about.backdrop}>{about.title}</BackdropHeading>
+
+      {/* Pe mobil textul vine primul; pe desktop cardurile trec in stanga, in
+          locul unde statea fotografia. Ordinea din DOM ramane cea de citit. */}
       <div className={styles.grid}>
-        <Reveal className={styles.media}>
-          <MediaPlaceholder
-            ratio="4/5"
-            label={about.image.label}
-            src={about.image.src}
-            alt={about.image.alt}
-            sizes="(max-width: 60rem) 100vw, 35vw"
-          />
-        </Reveal>
-
-        <Reveal delay={100}>
-          <Eyebrow>{about.eyebrow}</Eyebrow>
-
-          <div className={styles.identity}>
-            <h2 className={styles.name}>{about.name}</h2>
-            <span className={styles.role}>{about.role}</span>
-          </div>
+        <Reveal className={styles.intro}>
+          <p className={styles.greeting}>{about.greeting}</p>
 
           <div className={styles.paragraphs}>
             {about.paragraphs.map((paragraph) => (
@@ -32,15 +21,21 @@ export function About() {
               </p>
             ))}
           </div>
+        </Reveal>
 
-          <dl className={styles.credentials}>
-            {about.credentials.map((credential) => (
-              <div key={credential.label}>
-                <dt className={styles.credentialLabel}>{credential.label}</dt>
-                <dd className={styles.credentialValue}>{credential.value}</dd>
-              </div>
+        {/* Acelasi panou inchis ca la „Poate ai ajuns aici pentru ca...”, cu
+            fisele translucide inauntru. */}
+        <Reveal delay={100} className={`${styles.panel} u-squircle`}>
+          <ul className={styles.cards}>
+            {about.cards.map((card) => (
+              <li key={card.title} className={`${styles.card} u-squircle`}>
+                <h3 className={styles.cardTitle}>{card.title}</h3>
+                {/* Temele curg intr-un singur rand, separate prin bara: o lista
+                    cu buline citea ca o numerotare. */}
+                <p className={styles.cardItems}>{card.items.join(' / ')}</p>
+              </li>
             ))}
-          </dl>
+          </ul>
         </Reveal>
       </div>
     </Section>

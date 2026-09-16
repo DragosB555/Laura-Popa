@@ -1,0 +1,39 @@
+.root {
+  /* Cuvintele sunt `inline-block`, asa ca depasirea blurului nu trebuie taiata. */
+  --stagger: 55ms;
+  --delay: 0ms;
+}
+
+/* Cuvintele nu se mai misca: se aprind si se limpezesc pe loc. */
+.word {
+  display: inline-block;
+  opacity: 0;
+  filter: blur(6px);
+  transition:
+    opacity var(--duration-reveal) var(--ease-out),
+    filter var(--duration-reveal) var(--ease-out);
+  transition-delay: calc(var(--delay) + var(--i) * var(--stagger));
+  /* Fara `will-change` permanent: ar tine fiecare cuvant din pagina pe un
+     strat separat in GPU. Browserul il ridica singur cat tine tranzitia. */
+}
+
+.root[data-revealed='true'] .word {
+  opacity: 1;
+  filter: blur(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .word {
+    opacity: 1;
+    filter: none;
+    transition: none;
+  }
+}
+
+/* Fara JavaScript animatia nu poate porni — textul ramane vizibil. */
+@media (scripting: none) {
+  .word {
+    opacity: 1;
+    filter: none;
+  }
+}

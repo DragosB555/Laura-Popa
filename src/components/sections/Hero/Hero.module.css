@@ -1,75 +1,186 @@
+/* =========================================================================
+   01 — HERO
+
+   Sectiunea are inaltimea ecranului plus `--sky-scroll`: cat derulezi prin
+   surplusul asta, scena sta lipita sus si cerul se insenineaza.
+   `--sky-clear` (0 -> 1) si `data-sky` le scrie cerul pe sectiune.
+   ========================================================================= */
+
 .hero {
+  /* Destul cat fiecare fraza sa stea pe loc cat o citesti. */
+  --sky-scroll: 110svh;
+  --sky-clear: 0;
+  /* Deschis pe intunecat, cerneala pe senin. Trecerea e scurta, pe la mijloc,
+     ca textul sa nu ramana gri pe forme gri. */
+  --ink-mix: clamp(0, (var(--sky-clear) - 0.54) * 8, 1);
+
   position: relative;
-  overflow: hidden;
-  padding-block: var(--section-y) var(--section-y-lg);
+  height: calc(100svh + var(--sky-scroll));
 }
 
-/* Fundalul de valuri. Se estompeaza sus (sub header) si jos
-   (spre sectiunea urmatoare), ca sa nu apara o taietura dreapta. */
-.waves {
+/* Tinta ancorei: acolo unde s-a terminat inseninarea. Browserul scade
+   `scroll-padding-top` cand sare la ea, asa ca il adaugam inapoi. */
+.anchor {
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block-start: calc(var(--sky-scroll) + var(--header-height) + var(--space-4));
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+
+.stage {
+  position: sticky;
+  inset-block-start: 0;
+  height: 100svh;
+  /* Chenarul lasa o margine subtire de pagina in jur, egala pe toate
+     laturile: o singura valoare, legata de latime, nu una pe verticala si
+     alta pe orizontala. */
+  padding: var(--hero-inset);
+}
+
+/* Cerul si textul stau intr-o cutie rotunjita, ca a cardurilor. */
+.frame {
+  position: relative;
+  overflow: clip;
+  display: grid;
+  align-content: center;
+  height: 100%;
+  padding-block: calc(var(--header-height) + var(--space-8)) var(--section-y-sm);
+  border-radius: clamp(2rem, 5vw, 4.5rem);
+}
+
+.sky {
   position: absolute;
   inset: 0;
   z-index: 0;
-  mask-image: linear-gradient(
-    to bottom,
-    transparent 0%,
-    #000 14%,
-    #000 82%,
-    transparent 100%
-  );
 }
 
-.grid {
+/* Frazele stau pe mijlocul ecranului; textul si butonul atarna sub ele, in
+   afara fluxului, ca fraza sa nu urce cand apar. */
+.head {
   position: relative;
   z-index: 1;
   display: grid;
-  gap: var(--space-12);
-  align-items: center;
+  justify-items: center;
+  /* Blocul sta putin peste mijloc: dedesubt atarna textul si butonul, iar
+     la baza cutiei e indicatorul de derulare. */
+  transform: translateY(-8svh);
 }
 
-.content {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--space-8);
+/* Pe telefon textul si butonul ocupa mai mult pe inaltime: blocul urca mai
+   mult, ca butonul sa nu ajunga peste indicator. */
+@media (max-width: 40rem) {
+  .head {
+    transform: translateY(-14svh);
+  }
 }
 
-.intro {
-  font-family: var(--font-serif);
-  font-size: var(--text-4xl);
-  line-height: var(--leading-tight);
-  letter-spacing: var(--tracking-tight);
-  max-width: 18ch;
-}
-
+/* Frazele se aduna una sub alta: fiecare ramane pe loc cand vine urmatoarea.
+   Blocul e centrat pe verticala, deci cele de deasupra urca putin la fiecare
+   fraza noua. */
 .lines {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-  font-size: var(--text-md);
-  line-height: var(--leading-relaxed);
-  color: var(--color-ink-muted);
-  max-width: var(--measure);
-}
-
-.closing {
-  font-size: var(--text-md);
-  color: var(--color-ink);
-}
-
-.media {
-  max-width: 26rem;
+  display: grid;
+  row-gap: 0.12em;
+  justify-items: center;
   margin-inline: auto;
-  width: 100%;
+  text-align: center;
+  font-family: var(--font-serif);
+  /* Legat de latimea ecranului, ca fiecare fraza sa stea pe un singur rand
+     si pe telefon. */
+  font-size: clamp(1.125rem, 7vw, 4rem);
+  white-space: nowrap;
+  font-weight: var(--weight-medium);
+  line-height: 1.05;
+  letter-spacing: var(--tracking-tight);
+  text-wrap: balance;
+  /* Culoarea urmeaza `--ink-mix`. Umbra tine textul lizibil pe intunecat. */
+  color: color-mix(
+    in srgb,
+    var(--color-ink) calc(var(--ink-mix) * 100%),
+    var(--color-ink-inverse)
+  );
+  text-shadow: 0 1px 1.5rem rgb(0 0 0 / calc((1 - var(--ink-mix)) * 0.45));
 }
 
-@media (min-width: 60rem) {
-  .grid {
-    grid-template-columns: 1.1fr 0.9fr;
-    gap: var(--space-16);
-  }
+/* Fiecare fraza apare la pragul ei pe `--sky-clear` si ramane.
+     prima:  de la inceput
+     a doua: 0.22 -> 0.34
+     textul trece pe cerneala intre 0.54 si 0.67
+     a treia: 0.56 -> 0.68; textul si butonul vin dupa ea
+   Pana apare, fraza nu ocupa loc (`max-height` 0), ca blocul sa ramana
+   centrat pe ce se vede. */
+.line {
+  --shown: 1;
 
-  .media {
-    max-width: none;
+  display: block;
+  max-height: calc(var(--shown) * 3em);
+  overflow: clip;
+  overflow-clip-margin: 0.25em;
+  opacity: var(--shown);
+  filter: blur(calc((1 - var(--shown)) * 0.4rem));
+  transform: translateY(calc((1 - var(--shown)) * 0.35em));
+}
+
+.line[data-step='1'] {
+  --shown: clamp(0, (var(--sky-clear) - 0.22) * 8.33, 1);
+}
+
+.line[data-step='2'] {
+  --shown: clamp(0, (var(--sky-clear) - 0.56) * 8.33, 1);
+}
+
+/* --- Textul si butonul, odata cu ultima fraza --- */
+
+.outro {
+  --outro: clamp(0, (var(--sky-clear) - 0.72) * 6.67, 1);
+
+  position: absolute;
+  inset-block-start: 100%;
+  inset-inline-start: 50%;
+  display: grid;
+  justify-items: center;
+  gap: var(--space-6);
+  width: min(100%, 40rem);
+  margin-block-start: var(--space-8);
+  text-align: center;
+  opacity: var(--outro);
+  transform: translate(-50%, calc((1 - var(--outro)) * 0.75rem));
+  /* Cat nu se vede, butonul nu se poate atinge si nu primeste focus. */
+  visibility: hidden;
+}
+
+.hero[data-sky='open'] .outro {
+  visibility: visible;
+}
+
+.body {
+  max-width: 40ch;
+  font-size: var(--text-lg);
+  line-height: var(--leading-snug);
+  text-wrap: balance;
+  color: var(--color-ink-muted);
+}
+
+/* Pe telefon textul are marimea obisnuita a paragrafelor de pe site. */
+@media (max-width: 47.999rem) {
+  .body {
+    font-size: var(--text-md);
   }
+}
+
+/* --- Indicatorul de derulare, centrat la baza cutiei --- */
+
+.scrollHint {
+  position: absolute;
+  inset-block-end: var(--space-6);
+  inset-inline-start: 50%;
+  z-index: 1;
+  translate: -50% 0;
+  color: color-mix(
+    in srgb,
+    var(--color-ink) calc(var(--ink-mix) * 100%),
+    var(--color-ink-inverse)
+  );
+  opacity: 0.8;
 }

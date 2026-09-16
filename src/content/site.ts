@@ -6,17 +6,42 @@
    ========================================================================= */
 
 export const site = {
-  name: '[Nume Prenume]',
-  role: 'Psiholog / Psihoterapeut',
+  name: 'Laura Popa',
+  role: 'Coaching și dezvoltare',
   /** Folosit în <title> și Open Graph. */
   tagline: 'Un spațiu în care poți spune lucrurile exact așa cum sunt.',
   description:
-    'Cabinet de psihoterapie și consiliere. Un spațiu sigur în care poți vorbi deschis, fără presiunea de a avea totul clar de la început.',
-  /** Domeniul final — folosit pentru metadata, sitemap și robots. */
-  url: 'https://example.com',
-  email: '[adresa@email.ro]',
-  phone: '[+40 7XX XXX XXX]',
-  location: '[Oraș] / Online',
+    'Coaching de viață, coaching de carieră și dezvoltare personală cu Laura Popa, în București (Sectorul 5) sau online. Prima ședință este gratuită.',
+  /** Domeniul final, fara slash la capat — folosit pentru metadata, sitemap și robots. */
+  url: 'https://laurapopa.com',
+  email: 'laurapopa.1972@yahoo.com',
+  phone: '+40 755 347 814',
+  /** Link scurt de WhatsApp, generat din contul de business. */
+  whatsapp: 'https://wa.link/pg69w7',
+  /** Fiecare element pe randul lui. */
+  location: ['București, Sectorul 5', 'Online'],
+  /** Adresa pentru datele structurate (Google). */
+  address: { locality: 'București', region: 'Sectorul 5', country: 'RO' },
+};
+
+/* ------------------------------------------------------------------ SEO */
+export const seo = {
+  /** Titlul din Google si din tab. Sub ~60 de caractere, ca sa nu fie taiat. */
+  title: `${site.name} - ${site.role} | București și online`,
+  /** Textul de pe imaginea de distribuire (Open Graph). */
+  ogHeadline: 'Coaching și dezvoltare personală',
+  ogDetails: 'București · Online · Prima ședință gratuită',
+  ogAlt: `${site.name} - ${site.role}, în București și online`,
+  keywords: [
+    'coaching',
+    'coaching de viață',
+    'coaching de carieră',
+    'dezvoltare personală',
+    'coach București',
+    'coaching online',
+    'relații și comunicare',
+    'Laura Popa',
+  ],
 };
 
 /** Ancorele secțiunilor — sursă unică pentru id-uri și linkuri de navigație. */
@@ -25,7 +50,6 @@ export const anchors = {
   reasons: 'de-ce-esti-aici',
   therapyForYou: 'este-terapia-pentru-tine',
   process: 'cum-incepem',
-  listened: 'ascultare',
   about: 'despre-mine',
   firstSession: 'prima-sedinta',
   faq: 'intrebari',
@@ -33,30 +57,35 @@ export const anchors = {
 };
 
 export const nav = {
+  /* Toate sectiunile paginii. Heroul lipseste — acolo duce numele din stanga —
+     si la fel contactul, care e butonul din dreapta. Etichetele sunt scurte
+     intentionat: intr-o bara care se stramteaza pe continut, titlul intreg al
+     sectiunii ar sparge randul. */
   links: [
+    { label: 'De ce ești aici', href: `#${anchors.reasons}` },
+    { label: 'Avantaje', href: `#${anchors.therapyForYou}` },
     { label: 'Cum începem', href: `#${anchors.process}` },
     { label: 'Despre mine', href: `#${anchors.about}` },
+    { label: 'Prima ședință', href: `#${anchors.firstSession}` },
     { label: 'Întrebări', href: `#${anchors.faq}` },
   ],
-  cta: { label: 'Programează o ședință', href: `#${anchors.final}` },
+  /* `shortLabel` apare in meniul de pe telefon, unde eticheta lunga nu incape. */
+  cta: { label: 'Programează o ședință', shortLabel: 'Contact', href: `#${anchors.final}` },
 };
 
 /* ------------------------------------------------------------------ 01 */
 export const hero = {
-  intro: 'Poate că, în ultima vreme, ceva nu mai e chiar cum era.',
-  lines: [
-    'Poate ai prea multe lucruri în minte.',
-    'Poate simți că te-ai îndepărtat de tine.',
-    'Sau poate nici nu știi exact ce te-a făcut să cauți aici.',
-  ],
-  closing: 'Și e în regulă să nu știi încă.',
-  cta: { label: 'Hai să vorbim', href: `#${anchors.final}` },
-  image: {
-    label: 'Fotografie — prezență și calm',
-    /** Pune calea imaginii reale aici, ex. '/images/hero.jpg' */
-    src: undefined as string | undefined,
-    alt: 'Fotografie care transmite prezență și calm',
-  },
+  /* O singura fraza, pe trei randuri care se aduna pe masura ce cerul se
+     insenineaza: furtuna -> la jumatate -> senin. */
+  lines: ['Poate că acum e greu,', 'nu trebuie să rămână așa,', 'putem vorbi despre asta.'],
+  /* Apar odata cu ultima fraza, pe cerul senin. */
+  body: 'Prima discuție e despre tine: ce te apasă și de unde putem porni. Prima ședință e gratuită.',
+  cta: { label: 'Despre mine', href: `#${anchors.about}` },
+};
+
+/* ------------------------------------------------------ moto (01 -> 02) */
+export const motto = {
+  text: 'Coachingul nu tratează o suferință, ci deblochează potențialul',
 };
 
 /* ------------------------------------------------------------------ 02 */
@@ -65,6 +94,7 @@ export const reasons = {
   /* `icon` este un nume din setul Lucide; corespondența nume -> componentă
      se face în `Reasons.tsx`. Ca să schimbi pictograma, schimbă numele aici
      și adaugă-l în harta din componentă. */
+  backdrop: ['despre', 'tine'],
   items: [
     { icon: 'batteryLow', text: 'te simți obosit chiar și atunci când ai dormit.' },
     { icon: 'brain', text: 'îți este greu să oprești gândurile.' },
@@ -79,26 +109,36 @@ export const reasons = {
     },
     { icon: 'messages', text: 'sau pur și simplu simți că ai nevoie să vorbești cu cineva.' },
   ] as const,
-  statement: 'Nu trebuie să existe un motiv suficient de mare pentru a cere ajutor.',
 };
 
 /* ------------------------------------------------------------------ 03 */
 export const therapyForYou = {
-  title: 'Și poate te întrebi dacă terapia este pentru tine.',
+  title: 'Și poate te întrebi de avantajele terapiei.',
+  backdrop: ['pentru', 'tine'],
+  /* `icon` e un nume din setul Lucide; corespondenta nume -> componenta se
+     face in `TherapyForYou.tsx`. */
   items: [
-    'Nu trebuie să vii cu o problemă bine definită.',
-    'Nu trebuie să știi ce să spui.',
-    'Nu trebuie să ai răspunsurile pregătite.',
-    'Nu trebuie să știi dacă „e destul de grav”.',
+    { icon: 'target', title: 'Claritate', text: 'Obiective bine definite.' },
+    { icon: 'listChecks', title: 'Plan', text: 'Pași concreți, cu termene fixe.' },
+    {
+      icon: 'handshake',
+      title: 'Responsabilizare',
+      text: 'Un partener de „drum” care te ține aproape de obiectivele tale.',
+    },
+    {
+      icon: 'lightbulb',
+      title: 'Perspectivă',
+      text: 'Discuțiile potrivite scot la suprafață opțiuni noi, pe care nu le vedeai.',
+    },
   ],
   closing:
-    'Prima ședință poate fi pur și simplu o conversație. Despre ce se întâmplă acum, despre ce ai nevoie și despre ce ai vrea să fie diferit.',
-  cta: { label: 'Află cum funcționează', href: `#${anchors.process}` },
+    'Prima ședință este gratuită și poate fi pur și simplu o conversație. Despre ce se întâmplă acum, despre ce ai nevoie și despre ce ai vrea să fie diferit.',
 };
 
 /* ------------------------------------------------------------------ 04 */
 export const process = {
-  title: 'Cum începem',
+  title: 'Cum decurge o întâlnire',
+  backdrop: ['cum', 'începem'],
   steps: [
     {
       number: '01',
@@ -124,91 +164,83 @@ export const process = {
   ],
 };
 
-/* ------------------------------------------------------------------ 05 */
-export const listened = {
-  statement:
-    'Uneori, primul lucru de care avem nevoie este un loc în care putem spune lucrurile exact așa cum sunt.',
-  lines: [
-    'Fără să le facem mai mici.',
-    'Fără să le justificăm.',
-    'Fără să ne prefacem că suntem bine.',
-  ],
-};
 
 /* ------------------------------------------------------------------ 06 */
 export const about = {
-  eyebrow: 'Cine este omul de partea cealaltă?',
-  name: site.name,
-  role: site.role,
+  title: 'Laura Popa',
+  backdrop: ['despre', 'mine'],
+  greeting: 'Bună,',
   paragraphs: [
-    `Sunt ${site.name} și cred că terapia începe, înainte de toate, cu o relație bazată pe încredere și siguranță.`,
-    'În practica mea, încerc să creez un spațiu în care să poți vorbi deschis despre ceea ce trăiești, fără presiunea de a avea totul clar de la început.',
+    'Ofer un spațiu sigur și fără judecată pentru discuții. Lucrez într-un mod empatic, adaptându-mă fiecărei persoane.',
+    'Consider că fiecare individ este unic și are un drum unic, iar rolul meu este să te sprijin pe acest drum al cunoașterii de sine, pentru a crea împreună schimbarea pe care o cauți.',
   ],
-  credentials: [
-    { label: 'Formare', value: '[Formare profesională]' },
-    { label: 'Acreditări', value: '[Acreditări / Colegiul Psihologilor]' },
-    { label: 'Experiență', value: '[Ani de experiență / domenii]' },
-    { label: 'Abordare', value: '[Metodă / abordare terapeutică]' },
+  /* Cele patru directii de lucru, pe o grila 2x2. Fiecare card: un titlu si
+     cateva teme. */
+  cards: [
+    {
+      title: 'Dezvoltare personală',
+      items: ['încredere în sine', 'blocaje', 'perioade dificile', 'comunicare'],
+    },
+    {
+      title: 'Coaching de viață',
+      items: ['stres', 'obiceiuri sănătoase', 'echilibru personal', 'părinți și copii'],
+    },
+    {
+      title: 'Coaching de carieră',
+      items: ['direcție profesională', 'echilibru', 'pregătire de schimbare'],
+    },
+    {
+      title: 'Relații și comunicare',
+      items: ['relații sănătoase', 'limite clare', 'conflicte', 'apropiere'],
+    },
   ],
-  image: {
-    label: 'Fotografie — portret autentic',
-    src: undefined as string | undefined,
-    alt: `Portret ${site.name}`,
-  },
 };
 
 /* ------------------------------------------------------------------ 07 */
 export const firstSession = {
-  eyebrow: 'Poate vrei să știi cum va fi prima dată.',
   title: 'Ce se întâmplă la prima ședință?',
-  statement: 'Nu există un test pe care trebuie să îl treci și nici răspunsuri corecte.',
-  details: [
-    { label: 'Durată', value: '50 min', note: 'durata unei ședințe' },
-    { label: 'Format', value: '[Online / Cabinet]', note: '[detalii]' },
-    { label: 'Investiție', value: '[Preț]', note: 'per ședință' },
-  ],
-  description:
-    'Prima întâlnire este despre a ne cunoaște. Îmi povestești ce te-a adus aici, atât cât simți că poți, iar la final decidem împreună dacă și cum continuăm.',
+  backdrop: ['prima', 'ședință'],
+  format: {
+    label: 'Format',
+    text: 'Ședințele se desfășoară fizic la cabinet sau online, doar cu programare.',
+  },
+  duration: { label: 'Durată', value: 50, unit: 'min', note: 'ședință' },
 };
 
 /* ------------------------------------------------------------------ 08 */
 export const faq = {
-  eyebrow: 'Întrebările pe care poate nu le-ai pus',
-  title: 'Întrebări frecvente',
+  title: 'Înainte să începem',
+  backdrop: ['Întrebări', 'frecvente'],
+  chatName: 'Tu',
+  chatStatus: 'online',
+  chatPlaceholder: 'Mesaj',
   items: [
     {
       question: 'Dacă nu știu despre ce să vorbesc?',
-      answer: '[Răspuns — poți începe fără un plan; tăcerea și ezitarea fac parte din proces.]',
+      answer:
+        'Nu ai nevoie de un plan. Putem porni de la ce simți acum sau de la ce te-a făcut să cauți o discuție, iar restul se leagă pe parcurs. Pauzele și ezitările fac și ele parte din proces.',
     },
     {
       question: 'Dacă mă emoționez?',
-      answer: '[Răspuns — cabinetul este un loc în care emoția are voie să existe.]',
+      answer:
+        'E în regulă. Emoțiile au loc aici și nu trebuie ascunse sau grăbite. Facem o pauză dacă ai nevoie și mergem mai departe în ritmul tău.',
     },
     {
       question: 'Dacă nu știu dacă am nevoie de terapie?',
-      answer: '[Răspuns — putem afla împreună, la prima întâlnire.]',
+      answer:
+        'Nu trebuie să știi dinainte. Prima ședință e gratuită tocmai pentru asta: vorbim despre ce trăiești și vedem împreună dacă procesul te poate ajuta. Dacă simt că ai nevoie de alt tip de sprijin, cum ar fi psihoterapia, îți spun deschis.',
     },
     {
       question: 'Cât de des trebuie să vin?',
-      answer: '[Răspuns — ritmul obișnuit și cum îl stabilim împreună.]',
-    },
-    {
-      question: 'Pot să mă opresc dacă simt că nu este pentru mine?',
-      answer: '[Răspuns — da; cum discutăm despre încheiere.]',
+      answer:
+        'De obicei, o ședință pe săptămână sau la două săptămâni, de câte 50 de minute. Ritmul îl stabilim împreună, după obiectivele tale și după cum te simți pe parcurs.',
     },
   ],
 };
 
 /* ------------------------------------------------------------------ 09 */
 export const final = {
-  lines: ['Nu trebuie să știi exact de unde să începi.', 'Putem începe de aici.'],
-  cta: { label: 'Programează o primă ședință', href: `mailto:${site.email}` },
+  title: 'Prima ședință e gratuită.',
+  backdrop: ['contact'],
 };
 
-export const footer = {
-  note: 'Informațiile de pe acest site au caracter informativ și nu înlocuiesc o evaluare profesională.',
-  links: [
-    { label: 'Politica de confidențialitate', href: '/confidentialitate' },
-    { label: 'Termeni și condiții', href: '/termeni' },
-  ],
-};

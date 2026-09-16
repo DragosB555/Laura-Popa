@@ -1,0 +1,117 @@
+.phone {
+  position: relative;
+  /* Inaltimea comanda latimea, ca proportia sa ramana de telefon. */
+  height: 85vh;
+  height: 85svh;
+  max-height: 52rem;
+  aspect-ratio: 9 / 17.5;
+  width: auto;
+  max-width: 100%;
+  margin-inline: auto;
+  padding: 0.6rem;
+  border-radius: 2.75rem;
+  background-color: var(--color-ink);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.12) inset,
+    0 24px 60px -24px rgba(31, 29, 26, 0.45);
+}
+
+.screen {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 2.25rem;
+  background-color: var(--color-bg-alt);
+}
+
+/* Antetul conversatiei. Sta sub casca si nu se deruleaza odata cu mesajele. */
+.header {
+  flex: none;
+  padding: 1.6rem var(--space-4) var(--space-3);
+}
+
+/* Bara de scris. Ca si antetul, sta in afara zonei care se deruleaza. */
+.footer {
+  flex: none;
+  padding: var(--space-3) var(--space-4) var(--space-5);
+}
+
+.body {
+  /* Mesajele se aseaza de jos in sus, ca intr-un fir de conversatie. */
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: var(--space-6) var(--space-4);
+}
+
+/* Casca / bara de sus */
+.notch {
+  position: absolute;
+  inset-block-start: 0.7rem;
+  inset-inline: 0;
+  margin-inline: auto;
+  width: 3.5rem;
+  height: 0.3rem;
+  border-radius: var(--radius-full);
+  background-color: rgba(31, 29, 26, 0.28);
+  z-index: 1;
+}
+
+/* Pe desktop trecem la proportie de tableta: la aceeasi inaltime, ecranul e
+   mult mai lat, deci conversatia se citeste fara sa rupa randurile. */
+@media (min-width: 64rem) {
+  .phone {
+    aspect-ratio: 3 / 4;
+    padding: 0.75rem;
+    border-radius: 2.25rem;
+  }
+
+  .screen {
+    border-radius: 1.6rem;
+  }
+
+  .body {
+    padding: var(--space-8);
+  }
+
+  .header {
+    padding: 1.8rem var(--space-6) var(--space-4);
+  }
+
+  .footer {
+    padding: var(--space-4) var(--space-6) var(--space-6);
+  }
+}
+
+/* Pe ecrane mici carcasa doar fura latime — ramane doar conversatia. */
+@media (max-width: 39.999rem) {
+  .phone {
+    height: auto;
+    max-height: none;
+    aspect-ratio: auto;
+    width: 100%;
+    padding: 0;
+    border-radius: 0;
+    background-color: transparent;
+    box-shadow: none;
+  }
+
+  .screen {
+    border-radius: 0;
+    background-color: transparent;
+  }
+
+  .body {
+    padding: 0;
+  }
+
+  .header,
+  .footer,
+  .notch {
+    display: none;
+  }
+}

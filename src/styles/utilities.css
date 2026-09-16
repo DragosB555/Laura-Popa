@@ -56,13 +56,16 @@
   transform: translateY(0);
 }
 
-/* Animatie de intrare la scroll — vezi hook-ul useReveal */
+/* Aparitie si stingere la scroll — vezi hook-ul useReveal. Elementul nu se
+   deplaseaza: doar se stinge si se apropie foarte putin. */
 .u-reveal {
   opacity: 0;
-  transform: translateY(16px);
+  transform: scale(0.985);
   transition:
-    opacity var(--duration-slow) var(--ease-out),
-    transform var(--duration-slow) var(--ease-out);
+    opacity var(--duration-reveal) var(--ease-out),
+    transform var(--duration-reveal) var(--ease-out);
+  /* Fara `will-change` permanent: fiecare bloc ar sta pe un strat GPU al lui
+     tot timpul. Browserul il ridica singur cat tine tranzitia. */
 }
 
 .u-reveal[data-revealed='true'] {
@@ -71,9 +74,11 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .u-reveal {
+  .u-reveal,
+  .u-reveal[data-revealed='false'] {
     opacity: 1;
     transform: none;
+    transition: none;
   }
 }
 
@@ -83,4 +88,57 @@
     opacity: 1;
     transform: none;
   }
+}
+
+/* --------------------------------------------------------------------------
+   Colturi „squircle" (superelipsa), ca pe iOS: raza se topeste in latura in
+   loc sa porneasca brusc dintr-un arc de cerc. `corner-shape` e recenta, asa
+   ca o aplicam doar unde exista — altfel raman colturile rotunde obisnuite.
+   Se foloseste impreuna cu un `border-radius`, pe care il modeleaza.
+   -------------------------------------------------------------------------- */
+@supports (corner-shape: squircle) {
+  .u-squircle {
+    corner-shape: squircle;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Ridicarea paginii peste contact.
+
+   Pagina sta opaca peste suprafata inchisa fixata dedesubt. Distantierul de sub ea
+   e transparent si inalt cat contactul: el deschide spatiul in care pagina urca.
+
+   Colturile de jos sunt rotunjite de la inceput, nu se rotunjesc la scroll:
+   raza animata redesena la fiecare cadru toata pagina, cu umbra ei cu tot, si
+   capatul paginii mergea sacadat. Oricum colturile stau sub marginea
+   ecranului pana incepe ridicarea.
+   -------------------------------------------------------------------------- */
+.u-page {
+  position: relative;
+  z-index: var(--z-base);
+  background-color: var(--color-bg);
+  /* Fara `corner-shape: squircle`: superelipsa umple coltul si l-ar face sa
+     para drept tocmai unde trebuie sa fie cel mai rotund. */
+  /* Pe telefon mai strans, cam cat colturile hero-ului. */
+  --page-radius: clamp(2rem, 9vw, 9rem);
+
+  border-bottom-left-radius: var(--page-radius);
+  border-bottom-right-radius: var(--page-radius);
+  box-shadow: 0 28px 56px -28px rgba(30, 20, 12, 0.45);
+}
+
+.u-page-spacer {
+  position: relative;
+  height: var(--contact-height);
+  pointer-events: none;
+}
+
+/* Lipita de capatul distantierului: sarind aici, pagina deruleaza pana la
+   capat si contactul ramane descoperit. */
+.u-page-spacer-anchor {
+  position: absolute;
+  inset-block-end: 0;
+  inset-inline-start: 0;
+  width: 1px;
+  height: 1px;
 }

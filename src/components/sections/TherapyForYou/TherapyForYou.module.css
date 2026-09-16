@@ -1,52 +1,92 @@
-.grid {
-  display: grid;
-  gap: var(--space-10);
-}
-
-.list {
-  display: grid;
-  gap: var(--space-6);
-}
-
-.item {
+.section {
   position: relative;
-  padding-left: var(--space-6);
-  font-size: var(--text-md);
-  line-height: var(--leading-relaxed);
-  color: var(--color-ink);
+  /* `clip`, nu `hidden`: `hidden` face din sectiune un container de scroll, iar
+     atunci parallaxul titlului (`animation-timeline: view()`) nu mai porneste. */
+  overflow: clip;
 }
 
-.item::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0.75em;
-  width: var(--space-3);
-  height: 1px;
-  background-color: var(--color-accent);
+/* Bento: o cutie inalta, inchisa la culoare, langa un grup de patru cutii
+   deschise. Pe mobil totul se aseaza pe o coloana. */
+.bento {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: var(--space-3);
+}
+
+/* --- Cutia mare: textul de incheiere --- */
+.feature {
+  --panel-base: var(--color-panel);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(var(--space-8), 4vw, var(--space-12));
+  border-radius: 4.5rem;
+  background-color: var(--panel-base);
+  background-image:
+    var(--grain),
+    var(--panel-sheen);
+  box-shadow:
+    var(--panel-inner-glow),
+    0 32px 64px -28px var(--color-panel-shadow);
 }
 
 .closing {
-  margin-top: var(--space-10);
-  max-width: var(--measure);
+  font-family: var(--font-serif);
+  font-size: var(--text-xl);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-tight);
+  color: #ffffff;
+}
+
+/* --- Cele patru cutii deschise --- */
+.items {
+  display: grid;
+  gap: var(--space-3);
+  grid-auto-rows: 1fr;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding: clamp(var(--space-6), 3vw, var(--space-10));
+  border-radius: 4.5rem;
+  background-color: color-mix(in srgb, var(--color-surface) 70%, transparent);
   font-size: var(--text-md);
   line-height: var(--leading-relaxed);
   color: var(--color-ink-muted);
 }
 
-.cta {
-  margin-top: var(--space-8);
+/* Titlul cardului: serif, ca restul titlurilor; textul ramane dedesubt. */
+.itemTitle {
+  margin-bottom: calc(var(--space-5) * -1 + var(--space-2));
+  font-family: var(--font-serif);
+  font-size: var(--text-xl);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-ink);
 }
 
-@media (min-width: 60rem) {
-  .grid {
-    grid-template-columns: 0.9fr 1.1fr;
-    gap: var(--space-16);
-    align-items: start;
-  }
+/* Pictograma tine locul bullet-ului: acelasi rol, dar spune si despre ce e
+   vorba. Contur subtire, ca sa nu concureze cu textul. */
+.icon {
+  flex: none;
+  width: 1.75rem;
+  height: 1.75rem;
+  color: var(--color-accent);
+  stroke-width: 1.25;
+}
 
-  .list {
+@media (min-width: 40rem) {
+  .items {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--space-8);
+  }
+}
+
+@media (min-width: 64rem) {
+  .bento {
+    grid-template-columns: 0.85fr 1.15fr;
+    align-items: stretch;
   }
 }
