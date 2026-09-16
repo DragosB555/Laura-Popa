@@ -5,6 +5,12 @@
    Placeholderele sunt marcate cu [...] — înlocuiește-le cu date reale.
    ========================================================================= */
 
+/* Pe Vercel, adresa de productie vine din proiect: `.vercel.app` pana legi
+   domeniul, apoi domeniul propriu — automat, la urmatorul deploy. Asa imaginea
+   de distribuire si linkurile canonice indica mereu o adresa care raspunde. */
+/* `globalThis`: fisierul exporta si o sectiune numita `process`. */
+const productionHost = globalThis.process?.env.VERCEL_PROJECT_PRODUCTION_URL;
+
 export const site = {
   name: 'Laura Popa',
   role: 'Coaching și dezvoltare',
@@ -12,8 +18,10 @@ export const site = {
   tagline: 'Un spațiu în care poți spune lucrurile exact așa cum sunt.',
   description:
     'Coaching de viață, coaching de carieră și dezvoltare personală cu Laura Popa, în București (Sectorul 5) sau online. Prima ședință este gratuită.',
-  /** Domeniul final, fara slash la capat — folosit pentru metadata, sitemap și robots. */
-  url: 'https://laurapopa.com',
+  /** Adresa site-ului, fara slash la capat — folosita pentru metadata, sitemap și robots. */
+  url: productionHost ? `https://${productionHost}` : 'https://laurapopa.com',
+  /** Domeniul afisat (pe imaginea de distribuire). */
+  domain: 'laurapopa.com',
   email: 'laurapopa.1972@yahoo.com',
   phone: '+40 755 347 814',
   /** Link scurt de WhatsApp, generat din contul de business. */

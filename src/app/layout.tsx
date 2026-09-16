@@ -62,7 +62,9 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: '#fbfaf8',
-  colorScheme: 'light',
+  /* `only light`: browserele cu „mod intunecat fortat” (Chrome pe Android,
+     Samsung Internet) nu mai inverseaza culorile site-ului. */
+  colorScheme: 'only light',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

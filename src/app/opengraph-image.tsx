@@ -26,7 +26,7 @@ async function loadMulish(weight: number, text: string) {
 }
 
 export default async function OpengraphImage() {
-  const domain = site.url.replace(/^https?:\/\//, '');
+  const domain = site.domain;
   const text = `${seo.ogHeadline}${seo.ogDetails}${domain}`;
   const [medium, bold] = await Promise.all([loadMulish(500, text), loadMulish(700, text)]);
 
