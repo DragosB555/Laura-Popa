@@ -200,6 +200,8 @@ export const about = {
   backdrop: ['despre', 'mine'],
   greeting: 'Bună,',
   paragraphs: [
+    'Consilierea pentru dezvoltare personală este un parteneriat, un proces colaborativ care te ajută să îți antrenezi abilitățile. Pornim de la unde ești acum și construim împreună drumul către unde vrei să ajungi.',
+    'Avantajul unui coach cu formare de psiholog: dacă în proces apar blocaje mai adânci – anxietate, depresie, tipare vechi –, le recunoaștem la timp și le putem lucra în cadrul potrivit, al consilierii psihologice.',
     'Ofer un spațiu sigur și fără judecată pentru discuții. Lucrez într-un mod empatic, adaptându-mă fiecărei persoane.',
     'Consider că fiecare individ este unic și are un drum unic, iar rolul meu este să te sprijin pe acest drum al cunoașterii de sine, pentru a crea împreună schimbarea pe care o cauți.',
   ],
